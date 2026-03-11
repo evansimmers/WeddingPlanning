@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evan & Shi Wei — Wedding To-Do</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-dark: #2C3E2D;
+    --green-light: #A8C5A0;
+    --tan: #C4B99A;
+    --cream: #FAF7F2;
+    --white: #ffffff;
+    --text: #2C2820;
+    --text-muted: #999;
+    --border: #EDE9E2;
+    --evan: #4A7FA5;
+    --evan-bg: #EBF4FA;
+    --shiwei: #A05C7B;
+    --shiwei-bg: #F8EDF3;
+    --both: #7A7355;
+    --both-bg: #F5F2E8;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; }
+
+  .nav{background:rgba(44,62,45,0.97);backdrop-filter:blur(8px);display:flex;justify-content:center;gap:4px;padding:10px 16px;position:sticky;top:0;z-index:300;flex-wrap:wrap;}
+  .nav-btn{padding:7px 18px;border-radius:20px;border:none;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;color:rgba(255,255,255,0.6);background:transparent;transition:all 0.15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+  .nav-btn:hover{color:#fff;background:rgba(255,255,255,0.1);}
+  .nav-btn.active{background:rgba(255,255,255,0.15);color:#fff;}
+
+  .header {
+    background: linear-gradient(135deg, #2C3E2D 0%, #4A5E3A 60%, #6B7C5A 100%);
+    padding: 52px 24px 44px; text-align: center; position: relative; overflow: hidden;
+  }
+  .header::before {
+    content:''; position:absolute; inset:0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .header-eyebrow { color:var(--tan); font-size:11px; letter-spacing:5px; text-transform:uppercase; margin-bottom:14px; position:relative; }
+  .header h1 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(30px,7vw,52px); color:var(--cream); font-weight:400; margin-bottom:8px; position:relative; }
+  .header-venue { color:var(--green-light); font-size:14px; margin-bottom:32px; position:relative; }
+  .progress-wrap { max-width:380px; margin:0 auto; position:relative; }
+  .progress-labels { display:flex; justify-content:space-between; margin-bottom:8px; }
+  .progress-labels span:first-child { color:var(--tan); font-size:11px; letter-spacing:2px; text-transform:uppercase; }
+  .progress-labels span:last-child { color:var(--cream); font-size:13px; font-weight:600; }
+  .progress-bar-bg { height:6px; background:rgba(255,255,255,0.15); border-radius:3px; overflow:hidden; }
+  .progress-bar-fill { height:100%; background:linear-gradient(90deg,var(--green-light),var(--tan)); border-radius:3px; transition:width 0.4s ease; }
+  .progress-pct { color:var(--green-light); font-size:12px; text-align:right; margin-top:7px; }
+
+  .filters-bar {
+    max-width:740px; margin:24px auto 0; padding:0 16px;
+    display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+  }
+  .filter-label { font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1.5px; margin-right:4px; flex-shrink:0; }
+  .filter-btn {
+    padding:5px 14px; border-radius:20px; border:1.5px solid var(--border);
+    font-size:12px; font-family:'DM Sans',sans-serif; font-weight:500;
+    background:var(--white); color:var(--text-muted); cursor:pointer; transition:all 0.15s;
+  }
+  .filter-btn:hover { border-color:#bbb; color:var(--text); }
+  .filter-btn.f-all    { background:var(--green-dark); border-color:var(--green-dark); color:#fff; }
+  .filter-btn.f-evan   { background:var(--evan); border-color:var(--evan); color:#fff; }
+  .filter-btn.f-shiwei { background:var(--shiwei); border-color:var(--shiwei); color:#fff; }
+  .filter-btn.f-both   { background:var(--both); border-color:var(--both); color:#fff; }
+  .filter-btn.f-unassigned { background:#666; border-color:#666; color:#fff; }
+
+  .main { max-width:740px; margin:20px auto 0; padding:0 16px 80px; }
+  .category { background:var(--white); border-radius:14px; margin-bottom:16px; box-shadow:0 2px 14px rgba(0,0,0,0.055); border:1px solid rgba(0,0,0,0.055); overflow:hidden; }
+  .cat-header { display:flex; align-items:center; justify-content:space-between; padding:18px 22px; cursor:pointer; user-select:none; transition:background 0.15s; }
+  .cat-header:hover { background:#FDFCFA; }
+  .cat-header-left { display:flex; align-items:center; gap:12px; }
+  .cat-emoji { font-size:20px; }
+  .cat-title { font-size:15px; font-weight:600; color:var(--green-dark); }
+  .cat-header-right { display:flex; align-items:center; gap:12px; }
+  .cat-badge { font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; background:#F3F1EE; color:var(--text-muted); }
+  .cat-badge.done { background:#EAF5EC; color:#4A8C5A; }
+  .cat-chevron { color:#bbb; font-size:16px; transition:transform 0.22s; line-height:1; display:inline-block; }
+  .cat-chevron.closed { transform:rotate(-90deg); }
+  .cat-items { border-top:1px solid var(--border); }
+
+  .item { display:flex; align-items:flex-start; gap:12px; padding:13px 22px; border-bottom:1px solid #F7F4F0; transition:background 0.15s; }
+  .item:last-child { border-bottom:none; }
+  .item:hover { background:#FDFCFA; }
+  .item.is-done { background:#FAFDF9; }
+
+  .checkbox { width:20px; height:20px; border-radius:5px; flex-shrink:0; margin-top:3px; border:2px solid #C8BFB0; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.2s; background:transparent; font-size:12px; font-weight:bold; color:white; }
+
+  .item-body { flex:1; min-width:0; }
+  .item-text { font-size:14px; line-height:1.5; color:var(--text); display:block; margin-bottom:8px; }
+  .item-text.is-done { color:#BBAB9A; text-decoration:line-through; }
+
+  .item-meta { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+
+  /* assignee */
+  .assignee-wrap { position:relative; }
+  .assignee-pill {
+    display:inline-flex; align-items:center; gap:5px;
+    padding:3px 10px 3px 8px; border-radius:20px; font-size:11px; font-weight:600;
+    border:none; cursor:pointer; font-family:'DM Sans',sans-serif; transition:filter 0.15s; white-space:nowrap;
+  }
+  .assignee-pill:hover { filter:brightness(0.94); }
+  .ap-none   { background:#F0EDE8; color:#AAA; }
+  .ap-evan   { background:var(--evan-bg); color:var(--evan); }
+  .ap-shiwei { background:var(--shiwei-bg); color:var(--shiwei); }
+  .ap-both   { background:var(--both-bg); color:var(--both); }
+
+  .a-dropdown {
+    position:absolute; top:calc(100% + 5px); left:0; z-index:200;
+    background:var(--white); border:1px solid var(--border); border-radius:10px;
+    box-shadow:0 6px 24px rgba(0,0,0,0.13); overflow:hidden; min-width:130px; display:none;
+  }
+  .a-dropdown.open { display:block; }
+  .a-opt { padding:9px 14px; font-size:13px; cursor:pointer; font-weight:500; display:flex; align-items:center; gap:8px; transition:background 0.1s; }
+  .a-opt:hover { background:#F7F4F0; }
+  .a-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+  /* due date */
+  .due-wrap { display:inline-flex; align-items:center; gap:5px; }
+  .due-lbl { font-size:11px; color:var(--text-muted); }
+  .due-input {
+    font-size:11px; font-family:'DM Sans',sans-serif; color:var(--text);
+    border:none; background:transparent; cursor:pointer;
+    border-bottom:1px dashed #C8BFB0; padding:1px 2px; outline:none; width:88px;
+  }
+  .due-input:focus { border-bottom-color:var(--green-dark); }
+  .due-overdue { color:#C0392B !important; }
+  .due-soon    { color:#E67E22 !important; }
+
+  /* comments */
+  .comment-area { margin-top:8px; }
+  .comment-toggle {
+    display:inline-flex; align-items:center; gap:4px;
+    font-size:11px; color:var(--text-muted); background:none; border:none;
+    cursor:pointer; padding:0; font-family:'DM Sans',sans-serif; transition:color 0.15s;
+  }
+  .comment-toggle:hover { color:var(--green-dark); }
+  .comment-toggle.has-note { color:var(--green-dark); font-weight:600; }
+  .comment-box { display:none; margin-top:7px; }
+  .comment-box.open { display:block; }
+  .comment-textarea {
+    width:100%; min-height:62px; resize:vertical;
+    font-size:13px; font-family:'DM Sans',sans-serif; color:var(--text);
+    background:#FAFAF8; border:1px solid var(--border); border-radius:8px;
+    padding:9px 12px; outline:none; line-height:1.55; transition:border-color 0.15s, box-shadow 0.15s;
+  }
+  .comment-textarea:focus { border-color:#A8C5A0; box-shadow:0 0 0 3px rgba(168,197,160,0.15); background:#fff; }
+  .comment-textarea::placeholder { color:#C8C0B8; }
+
+  .footer { text-align:center; color:#C0B5A5; font-size:13px; margin-top:36px; font-family:'Playfair Display',serif; font-style:italic; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="wedding-todo.html" class="nav-btn active">☑ To-Do List</a>
+  <a href="wedding-budget.html" class="nav-btn">💰 Budget</a>
+  <a href="wedding-activities.html" class="nav-btn">🎉 Activities</a>
+</nav>
+
+<div class="header">
+  <p class="header-eyebrow">18 · 19 · 20 December 2026</p>
+  <h1>Evan &amp; Shi Wei</h1>
+  <p class="header-venue">Hillbrook Farm &amp; Estate, Whangamata</p>
+  <div class="progress-wrap">
+    <div class="progress-labels"><span>Progress</span><span id="pcnt">0 / 0</span></div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="pbar" style="width:0%"></div></div>
+    <p class="progress-pct" id="ppct">0% complete</p>
+  </div>
+</div>
+
+<div class="filters-bar">
+  <span class="filter-label">Show:</span>
+  <button class="filter-btn f-all"  data-f="all">All tasks</button>
+  <button class="filter-btn"        data-f="evan">Evan</button>
+  <button class="filter-btn"        data-f="shiwei">Shi Wei</button>
+  <button class="filter-btn"        data-f="both">Both</button>
+  <button class="filter-btn"        data-f="unassigned">Unassigned</button>
+</div>
+
+<div class="main" id="main"></div>
+
+<script>
+const CATS = [
+  { id:"venue", label:"Venue & Logistics", emoji:"🏡", color:"#8B7355", items:[
+    {id:"v1", text:"Confirm booking with Hillbrook Farm & Estate",                        a:"both",   d:"2026-03-31"},
+    {id:"v2", text:"Confirm accommodation capacity for all guests",                       a:"evan",   d:"2026-04-15"},
+    {id:"v3", text:"Arrange mobility parking near entrance",                              a:"evan",   d:"2026-11-01"},
+    {id:"v4", text:"Confirm parking field arrangements",                                  a:"evan",   d:"2026-11-01"},
+    {id:"v5", text:"Confirm venue setup / access times for the day",                      a:"both",   d:"2026-11-15"},
+  ]},
+  { id:"decor", label:"Furniture & Décor", emoji:"🌿", color:"#7A9E7E", items:[
+    {id:"d1", text:"Walk the venue and map out ceremony & reception zones — identify what furniture is already provided", a:"both",   d:"2026-04-30"},
+    {id:"d2", text:"Decide on overall décor style (relaxed / natural / garden party)",    a:"both",   d:"2026-05-31"},
+    {id:"d3", text:"Ceremony: arrange seating (chairs, hay bales, picnic rugs?) and focal point area", a:"shiwei", d:"2026-06-30"},
+    {id:"d4", text:"Reception: source or hire tables and chairs for the buffet dinner",   a:"evan",   d:"2026-06-30"},
+    {id:"d5", text:"Lighting: fairy lights, lanterns, or candles for the evening",        a:"shiwei", d:"2026-07-31"},
+    {id:"d6", text:"Florals: hire a florist, DIY, or go foliage-only",                   a:"shiwei", d:"2026-07-31"},
+    {id:"d7", text:"Table styling: tablecloths, centrepieces, candles",                  a:"shiwei", d:"2026-08-31"},
+    {id:"d8", text:"Signage: welcome sign, ceremony order, buffet labels",                a:"shiwei", d:"2026-10-31"},
+    {id:"d9", text:"Get quotes from hire companies and confirm order with deposit",       a:"evan",   d:"2026-07-31"},
+    {id:"d10",text:"Confirm delivery, setup, and pickup times with hire company",         a:"evan",   d:"2026-11-15"},
+    {id:"d11",text:"Arrange who is responsible for setting up décor on the day",          a:"both",   d:"2026-11-30"},
+  ]},
+  { id:"ceremony", label:"Ceremony", emoji:"💍", color:"#7D9B8A", items:[
+    {id:"c1", text:"Find and book a celebrant (non-religious, civil)",                    a:"both",   d:"2026-04-30"},
+    {id:"c2", text:"Write vows / ceremony outline with celebrant",                        a:"both",   d:"2026-10-31"},
+    {id:"c3", text:"Plan how Olivia will be included in the ceremony",                    a:"both",   d:"2026-09-30"},
+    {id:"c4", text:"Choose ceremony music / playlist",                                    a:"both",   d:"2026-10-31"},
+    {id:"c5", text:"Decide on ceremony seating or standing arrangement",                  a:"both",   d:"2026-08-31"},
+    {id:"c6", text:"Organise rings (purchase or resize if needed)",                       a:"both",   d:"2026-09-30"},
+    {id:"c7", text:"Apply for marriage licence — Births, Deaths & Marriages NZ (required at least 3 days before — do this early!)", a:"evan", d:"2026-11-01"},
+  ]},
+  { id:"guests", label:"Guests & Invitations", emoji:"💌", color:"#B8826D", items:[
+    {id:"g1", text:"Finalise guest list",                                                 a:"both",   d:"2026-04-01"},
+    {id:"g2", text:"Send save-the-dates",                                                 a:"both",   d:"2026-04-30"},
+    {id:"g3", text:"Send formal invitations with RSVP link or form",                     a:"both",   d:"2026-07-31"},
+    {id:"g4", text:"Set RSVP deadline (suggest ~1 Oct 2026)",                            a:"evan",   d:"2026-07-31"},
+    {id:"g5", text:"Collect dietary requirements via RSVP",                              a:"evan",   d:"2026-10-01"},
+    {id:"g6", text:"Share directions, parking & accommodation info with guests",          a:"evan",   d:"2026-10-31"},
+    {id:"g7", text:"Chase any outstanding RSVPs after deadline",                          a:"both",   d:"2026-10-15"},
+    {id:"g8", text:"Send final details to guests ~2 weeks before (schedule, what to bring)", a:"both", d:"2026-12-04"},
+  ]},
+  { id:"food", label:"Food & Drink", emoji:"🍽️", color:"#7D9B8A", items:[
+    {id:"f1", text:"Book catering for Friday canapés & buffet dinner",                   a:"both",   d:"2026-06-30"},
+    {id:"f2", text:"Book catering for Saturday brunch & BBQ",                            a:"both",   d:"2026-06-30"},
+    {id:"f3", text:"Arrange Sunday continental breakfast",                                a:"evan",   d:"2026-09-30"},
+    {id:"f4", text:"Pass dietary requirements to caterers once RSVPs are in",             a:"evan",   d:"2026-10-15"},
+    {id:"f5", text:"Organise drinks (alcohol, non-alcoholic options)",                   a:"evan",   d:"2026-10-31"},
+    {id:"f6", text:"Arrange good coffee setup (machine, beans, or barista?)",            a:"shiwei", d:"2026-10-31"},
+    {id:"f7", text:"Order or arrange the wedding cake / dessert",                         a:"shiwei", d:"2026-09-30"},
+  ]},
+  { id:"activities", label:"Activities & Entertainment", emoji:"🃏", color:"#8B7355", items:[
+    {id:"a1", text:"Curate a playlist or hire a musician for ceremony & reception",      a:"both",   d:"2026-10-31"},
+    {id:"a2", text:"Pack a selection of board games for Saturday afternoon",              a:"evan",   d:"2026-12-15"},
+    {id:"a3", text:"Arrange swimming / beach access for Saturday (towels etc.)",         a:"evan",   d:"2026-12-10"},
+    {id:"a4", text:"Plan Saturday BBQ setup (who's cooking, what's needed)",             a:"both",   d:"2026-11-30"},
+    {id:"a5", text:"Consider a lawn game or two (bocce, pétanque, etc.)",                a:"evan",   d:"2026-10-31"},
+  ]},
+  { id:"attire", label:"Attire", emoji:"👗", color:"#B8826D", items:[
+    {id:"at1",text:"Shi Wei — choose / order wedding outfit",                             a:"shiwei", d:"2026-06-30"},
+    {id:"at2",text:"Evan — choose / order wedding outfit",                                a:"evan",   d:"2026-07-31"},
+    {id:"at3",text:"Olivia — choose outfit for the ceremony 👶",                         a:"shiwei", d:"2026-10-31"},
+    {id:"at4",text:"Schedule any alterations or fittings",                                a:"shiwei", d:"2026-10-01"},
+  ]},
+  { id:"photography", label:"Photography & Memories", emoji:"📷", color:"#7D9B8A", items:[
+    {id:"p1", text:"Book a photographer for Friday ceremony & reception",                 a:"both",   d:"2026-05-31"},
+    {id:"p2", text:"Discuss shot list / priorities with photographer (include Olivia!)",  a:"both",   d:"2026-11-01"},
+    {id:"p3", text:"Decide on videography (yes / no / phone recording only)",            a:"both",   d:"2026-06-30"},
+    {id:"p4", text:"Set up a shared photo album for guests to contribute to",             a:"evan",   d:"2026-12-04"},
+  ]},
+  { id:"baby", label:"Olivia's Logistics", emoji:"👶", color:"#C4A882", items:[
+    {id:"b1", text:"Plan sleeping & nap arrangements onsite for the weekend",             a:"both",   d:"2026-11-30"},
+    {id:"b2", text:"Arrange a trusted person to look after Olivia during key moments",   a:"both",   d:"2026-10-31"},
+    {id:"b3", text:"Pack baby essentials bag for the whole weekend",                      a:"shiwei", d:"2026-12-15"},
+    {id:"b4", text:"Identify a safe baby-friendly space / play area at the venue",       a:"both",   d:"2026-11-01"},
+  ]},
+  { id:"budget", label:"Budget & Admin", emoji:"💰", color:"#8B7355", items:[
+    {id:"bu1",text:"Create a budget tracker across all categories (target: ~$50k NZD)",  a:"both",   d:"2026-03-31"},
+    {id:"bu2",text:"Get quotes from caterers, photographer, celebrant, etc.",            a:"both",   d:"2026-05-31"},
+    {id:"bu3",text:"Set up a joint wedding account or shared payment method",            a:"both",   d:"2026-04-15"},
+    {id:"bu4",text:"Consider wedding insurance",                                          a:"evan",   d:"2026-05-01"},
+    {id:"bu5",text:"Keep all vendor contracts and receipts in one place",                a:"evan",   d:"2026-04-30"},
+  ]},
+  { id:"week", label:"Week-of Checklist", emoji:"✅", color:"#7D9B8A", items:[
+    {id:"w1", text:"Confirm all vendor arrivals and timings",                             a:"evan",   d:"2026-12-14"},
+    {id:"w2", text:"Send final headcount to caterers",                                    a:"evan",   d:"2026-12-11"},
+    {id:"w3", text:"Prepare any printed materials (order of service, menus — if desired)", a:"shiwei", d:"2026-12-14"},
+    {id:"w4", text:"Pack personal items for the weekend",                                 a:"both",   d:"2026-12-17"},
+    {id:"w5", text:"Assign someone as day-of point of contact for vendors",              a:"evan",   d:"2026-12-14"},
+    {id:"w6", text:"Charge cameras / phones; confirm shared photo album is live",        a:"evan",   d:"2026-12-17"},
+    {id:"w7", text:"Relax — you've got this 💛",                                         a:"both",   d:"2026-12-18"},
+  ]},
+];
+
+// ── STATE ──────────────────────────────────────────────────────────────────────
+// ── SUPABASE SYNC ─────────────────────────────────────────────────────────────
+const SB_URL = 'https://xoqamngvqhgancbjmkvu.supabase.co';
+const SB_KEY = 'sb_publishable_rhkoY7C-OqoHJSYQSfsdVg_WQbiPfZg';
+
+async function sbFetch(path, opts) {
+  opts = opts || {};
+  const res = await fetch(SB_URL + path, {
+    method: opts.method || 'GET',
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': 'Bearer ' + SB_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || ''
+    },
+    body: opts.body || undefined
+  });
+  if (!res.ok) { const t = await res.text(); console.error('Supabase error:', res.status, t); return null; }
+  const txt = await res.text();
+  return txt ? JSON.parse(txt) : null;
+}
+
+async function loadFromSupabase(pageKey, stateRef, onLoaded) {
+  showSyncStatus('loading');
+  try {
+    const rows = await sbFetch('/rest/v1/wedding_state?page_key=eq.' + pageKey + '&select=state,updated_at');
+    if (rows && rows.length > 0 && rows[0].state) {
+      Object.assign(stateRef, rows[0].state);
+      lastUpdatedAt = rows[0].updated_at;
+    }
+  } catch(e) { console.warn('Supabase load failed, using defaults:', e); }
+  onLoaded();
+  hideSyncStatus();
+  startPolling(pageKey, stateRef, onLoaded);
+}
+
+async function saveToSupabase(pageKey, stateRef) {
+  showSyncStatus('saving');
+  try {
+    const body = JSON.stringify({ page_key: pageKey, state: stateRef, updated_at: new Date().toISOString() });
+    await sbFetch('/rest/v1/wedding_state', {
+      method: 'POST',
+      prefer: 'resolution=merge-duplicates',
+      body: body
+    });
+  } catch(e) { console.warn('Supabase save failed:', e); }
+  hideSyncStatus();
+}
+
+let lastUpdatedAt = null;
+function startPolling(pageKey, stateRef, onLoaded) {
+  setInterval(async function() {
+    try {
+      const rows = await sbFetch('/rest/v1/wedding_state?page_key=eq.' + pageKey + '&select=state,updated_at');
+      if (rows && rows.length > 0) {
+        if (lastUpdatedAt !== null && rows[0].updated_at !== lastUpdatedAt) {
+          Object.assign(stateRef, rows[0].state);
+          onLoaded();
+        }
+        lastUpdatedAt = rows[0].updated_at;
+      }
+    } catch(e) {}
+  }, 8000);
+}
+
+function showSyncStatus(mode) {
+  var el = document.getElementById('syncStatus');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'syncStatus';
+    el.style.cssText = 'position:fixed;bottom:16px;right:16px;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:600;font-family:"DM Sans",sans-serif;z-index:9999;transition:opacity 0.4s;pointer-events:none;box-shadow:0 2px 8px rgba(0,0,0,0.1);';
+    document.body.appendChild(el);
+  }
+  el.style.opacity = '1';
+  if (mode === 'loading') {
+    el.style.background = '#EBF4FA'; el.style.color = '#4A7FA5'; el.textContent = '↓ Loading…';
+  } else {
+    el.style.background = '#EAF5EC'; el.style.color = '#3A7D55'; el.textContent = '✓ Saved';
+  }
+}
+function hideSyncStatus() {
+  setTimeout(function() {
+    var el = document.getElementById('syncStatus');
+    if (el) el.style.opacity = '0';
+  }, 1400);
+}
+
+const SK = 'wedding-v4';
+let S = { checked:{}, assignees:{}, dues:{}, collapsed:{}, comments:{} };
+
+function persist() { saveToSupabase(SK, S); }
+
+function seedDefaults() {
+  CATS.forEach(cat => cat.items.forEach(it => {
+    if (S.assignees[it.id] === undefined) S.assignees[it.id] = it.a || '';
+    if (S.dues[it.id] === undefined)      S.dues[it.id]      = it.d || '';
+  }));
+}
+
+function onStateLoaded() {
+  seedDefaults();
+  render();
+  updateProgress();
+}
+
+// ── HELPERS ────────────────────────────────────────────────────────────────────
+const AM = {
+  '':      { label:'Assign…', cls:'ap-none',   dot:'#CCC' },
+  evan:    { label:'Evan',    cls:'ap-evan',   dot:'var(--evan)' },
+  shiwei:  { label:'Shi Wei', cls:'ap-shiwei', dot:'var(--shiwei)' },
+  both:    { label:'Both',    cls:'ap-both',   dot:'var(--both)' },
+};
+
+function dueCls(iso) {
+  if (!iso) return '';
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = new Date(iso);
+  const diff = (d - today) / 86400000;
+  if (diff < 0) return 'due-overdue';
+  if (diff <= 14) return 'due-soon';
+  return '';
+}
+
+let activeFilter = 'all';
+let openDD = null;
+
+function matchFilter(id) {
+  if (activeFilter === 'all') return true;
+  if (activeFilter === 'unassigned') return !S.assignees[id];
+  return S.assignees[id] === activeFilter;
+}
+
+// ── PROGRESS ───────────────────────────────────────────────────────────────────
+function updateProgress() {
+  const all = CATS.flatMap(c => c.items);
+  const vis = all.filter(i => matchFilter(i.id));
+  const done = vis.filter(i => S.checked[i.id]).length;
+  const total = vis.length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('pcnt').textContent = done+' / '+total;
+  document.getElementById('pbar').style.width = pct+'%';
+  document.getElementById('ppct').textContent = pct+'% complete';
+}
+
+// ── RENDER ─────────────────────────────────────────────────────────────────────
+function render() {
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+
+  CATS.forEach(cat => {
+    const visible = cat.items.filter(i => matchFilter(i.id));
+    if (!visible.length) return;
+
+    const catDone = visible.filter(i => S.checked[i.id]).length;
+    const collapsed = S.collapsed[cat.id];
+
+    const card = document.createElement('div');
+    card.className = 'category';
+
+    // — Header —
+    const hdr = document.createElement('div');
+    hdr.className = 'cat-header';
+    hdr.innerHTML = `
+      <div class="cat-header-left">
+        <span class="cat-emoji">${cat.emoji}</span>
+        <span class="cat-title">${cat.label}</span>
+      </div>
+      <div class="cat-header-right">
+        <span class="cat-badge${catDone===visible.length?' done':''}">${catDone}/${visible.length}</span>
+        <span class="cat-chevron${collapsed?' closed':''}">▾</span>
+      </div>`;
+    hdr.addEventListener('click', () => {
+      S.collapsed[cat.id] = !S.collapsed[cat.id];
+      persist(); render(); updateProgress();
+    });
+    card.appendChild(hdr);
+
+    if (!collapsed) {
+      const wrap = document.createElement('div');
+      wrap.className = 'cat-items';
+
+      visible.forEach(item => {
+        const isDone     = !!S.checked[item.id];
+        const assignee   = S.assignees[item.id] || '';
+        const dueVal     = S.dues[item.id] || '';
+        const am         = AM[assignee] || AM[''];
+
+        const row = document.createElement('div');
+        row.className = 'item' + (isDone ? ' is-done' : '');
+
+        // Checkbox
+        const box = document.createElement('div');
+        box.className = 'checkbox';
+        box.style.background = isDone ? cat.color : 'transparent';
+        box.style.border = isDone ? 'none' : '2px solid #C8BFB0';
+        box.textContent = isDone ? '✓' : '';
+        box.addEventListener('click', e => {
+          e.stopPropagation();
+          S.checked[item.id] = !S.checked[item.id];
+          persist(); render(); updateProgress();
+        });
+
+        // Body
+        const body = document.createElement('div');
+        body.className = 'item-body';
+
+        const txt = document.createElement('span');
+        txt.className = 'item-text' + (isDone ? ' is-done' : '');
+        txt.textContent = item.text;
+        body.appendChild(txt);
+
+        // Meta
+        const meta = document.createElement('div');
+        meta.className = 'item-meta';
+
+        // Assignee
+        const awrap = document.createElement('div');
+        awrap.className = 'assignee-wrap';
+
+        const pill = document.createElement('button');
+        pill.className = 'assignee-pill ' + am.cls;
+        pill.innerHTML = `<span style="width:7px;height:7px;border-radius:50%;background:${am.dot};display:inline-block;flex-shrink:0"></span>${am.label}`;
+
+        const dd = document.createElement('div');
+        dd.className = 'a-dropdown';
+        ['', 'evan', 'shiwei', 'both'].forEach(opt => {
+          const m = AM[opt];
+          const o = document.createElement('div');
+          o.className = 'a-opt';
+          o.innerHTML = `<span class="a-dot" style="background:${m.dot}"></span>${m.label}`;
+          o.addEventListener('mousedown', e => {
+            e.preventDefault(); e.stopPropagation();
+            S.assignees[item.id] = opt;
+            persist(); closeDD(); render(); updateProgress();
+          });
+          dd.appendChild(o);
+        });
+
+        pill.addEventListener('click', e => {
+          e.stopPropagation();
+          if (openDD && openDD !== dd) closeDD();
+          dd.classList.contains('open') ? closeDD() : (dd.classList.add('open'), openDD = dd);
+        });
+
+        awrap.appendChild(pill);
+        awrap.appendChild(dd);
+        meta.appendChild(awrap);
+
+        // Due date
+        const dueWrap = document.createElement('div');
+        dueWrap.className = 'due-wrap';
+        const dueLbl = document.createElement('span');
+        dueLbl.className = 'due-lbl';
+        dueLbl.textContent = 'Due:';
+        const dueIn = document.createElement('input');
+        dueIn.type = 'date';
+        dueIn.className = 'due-input ' + dueCls(dueVal);
+        dueIn.value = dueVal;
+        dueIn.addEventListener('click', e => e.stopPropagation());
+        dueIn.addEventListener('change', e => {
+          S.dues[item.id] = e.target.value;
+          persist(); render(); updateProgress();
+        });
+        dueWrap.appendChild(dueLbl);
+        dueWrap.appendChild(dueIn);
+        meta.appendChild(dueWrap);
+
+        body.appendChild(meta);
+
+        // Comment
+        const note = S.comments[item.id] || '';
+        const commentArea = document.createElement('div');
+        commentArea.className = 'comment-area';
+
+        const toggle = document.createElement('button');
+        toggle.className = 'comment-toggle' + (note ? ' has-note' : '');
+        toggle.innerHTML = note
+          ? `<span>✏️</span> Note`
+          : `<span style="opacity:.5">＋</span> Add note`;
+
+        const commentBox = document.createElement('div');
+        commentBox.className = 'comment-box' + (note ? ' open' : '');
+
+        const ta = document.createElement('textarea');
+        ta.className = 'comment-textarea';
+        ta.placeholder = 'Add a note, link, phone number, or any other details…';
+        ta.value = note;
+        ta.addEventListener('click', e => e.stopPropagation());
+        ta.addEventListener('input', e => {
+          S.comments[item.id] = e.target.value;
+          persist();
+          const hasNote = !!e.target.value;
+          toggle.className = 'comment-toggle' + (hasNote ? ' has-note' : '');
+          toggle.innerHTML = hasNote
+            ? `<span>✏️</span> Note`
+            : `<span style="opacity:.5">＋</span> Add note`;
+        });
+
+        commentBox.appendChild(ta);
+
+        toggle.addEventListener('click', e => {
+          e.stopPropagation();
+          commentBox.classList.toggle('open');
+          if (commentBox.classList.contains('open')) ta.focus();
+        });
+
+        commentArea.appendChild(toggle);
+        commentArea.appendChild(commentBox);
+        body.appendChild(commentArea);
+        row.appendChild(box);
+        row.appendChild(body);
+        wrap.appendChild(row);
+      });
+
+      card.appendChild(wrap);
+    }
+
+    main.appendChild(card);
+  });
+
+  const footer = document.createElement('p');
+  footer.className = 'footer';
+  footer.textContent = 'Made with love 🌿 · Hillbrook Farm, December 2026';
+  main.appendChild(footer);
+}
+
+function closeDD() {
+  if (openDD) { openDD.classList.remove('open'); openDD = null; }
+}
+document.addEventListener('click', closeDD);
+
+// ── FILTERS ────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeFilter = btn.dataset.f;
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.className = 'filter-btn';
+      if (b.dataset.f === activeFilter) b.classList.add('f-' + activeFilter);
+    });
+    render(); updateProgress();
+  });
+});
+
+// Boot: load from Supabase, then render
+loadFromSupabase(SK, S, onStateLoaded);
+</script>
+</body>
+</html>

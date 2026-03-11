@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evan & Shi Wei — Weekend Activities</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-dark:#2C3E2D; --green-mid:#4A5E3A; --green-light:#A8C5A0;
+    --tan:#C4B99A; --cream:#FAF7F2; --white:#fff;
+    --text:#2C2820; --text-muted:#999; --border:#EDE9E2;
+    --t-exercise:#4A7FA5;    --t-exercise-bg:#EBF4FA;
+    --t-connection:#7A5EA5;  --t-connection-bg:#F3EEF9;
+    --t-fun:#C07830;         --t-fun-bg:#FDF3E7;
+    --t-thoughtful:#3A7D55;  --t-thoughtful-bg:#EAF5EC;
+    --t-relaxation:#A05C7B;  --t-relaxation-bg:#F8EDF3;
+    --t-food:#8B6355;        --t-food-bg:#F9F0EC;
+    --day-fri:#7A6E4A; --day-fri-bg:#F7F3E8;
+    --day-sat:#4A7FA5; --day-sat-bg:#EBF4FA;
+    --day-sun:#3A7D55; --day-sun-bg:#EAF5EC;
+    --confirmed:#3A7D55; --confirmed-bg:#EAF5EC;
+    --potential:#C07830; --potential-bg:#FDF3E7;
+    --low-color:#3A7D55; --med-color:#C07830; --high-color:#B54040;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--text);min-height:100vh;}
+
+  /* NAV */
+  .nav{background:rgba(44,62,45,0.97);backdrop-filter:blur(8px);display:flex;justify-content:center;gap:4px;padding:10px 16px;position:sticky;top:0;z-index:300;flex-wrap:wrap;}
+  .nav-btn{padding:7px 18px;border-radius:20px;border:none;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;color:rgba(255,255,255,0.6);background:transparent;transition:all 0.15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+  .nav-btn:hover{color:#fff;background:rgba(255,255,255,0.1);}
+  .nav-btn.active{background:rgba(255,255,255,0.15);color:#fff;}
+
+  /* HEADER */
+  .header{background:linear-gradient(135deg,#2C3E2D 0%,#4A5E3A 60%,#6B7C5A 100%);padding:48px 24px 40px;text-align:center;position:relative;overflow:hidden;}
+  .header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,transparent 1px);background-size:24px 24px;}
+  .header-eyebrow{color:var(--tan);font-size:11px;letter-spacing:5px;text-transform:uppercase;margin-bottom:14px;position:relative;}
+  .header h1{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(28px,6vw,48px);color:var(--cream);font-weight:400;margin-bottom:8px;position:relative;}
+  .header-sub{color:var(--green-light);font-size:14px;position:relative;}
+
+  /* TOOLBAR */
+  .toolbar{max-width:880px;margin:20px auto 0;padding:0 16px;display:flex;flex-direction:column;gap:10px;}
+  .toolbar-filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .toolbar-actions{display:flex;align-items:center;gap:8px;justify-content:flex-end;}
+  .filter-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;flex-shrink:0;}
+  .filter-btn{padding:5px 13px;border-radius:20px;border:1.5px solid var(--border);font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;background:var(--white);color:var(--text-muted);cursor:pointer;transition:all 0.15s;}
+  .filter-btn:hover{border-color:#bbb;color:var(--text);}
+  .filter-btn.active{background:var(--green-dark);border-color:var(--green-dark);color:#fff;}
+  .toolbar-sep{width:1px;height:24px;background:var(--border);margin:0 4px;}
+  .add-activity-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:20px;border:1.5px solid var(--green-dark);background:var(--green-dark);color:#fff;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:all 0.15s;flex-shrink:0;}
+  .add-activity-btn:hover{background:var(--green-mid);}
+
+  /* PAGE LAYOUT */
+  .page-layout{max-width:1200px;margin:20px auto 0;padding:0 16px 80px;display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+  @media(max-width:800px){.page-layout{grid-template-columns:1fr;}}
+  .main{min-width:0;}
+  /* TIMELINE PANEL */
+  .tl-panel{position:sticky;top:52px;background:var(--white);border-radius:16px;box-shadow:0 2px 20px rgba(0,0,0,0.07);border:1px solid var(--border);overflow:hidden;max-height:calc(100vh - 80px);display:flex;flex-direction:column;transition:width 0.3s cubic-bezier(.4,0,.2,1);}
+  .tl-panel.tl-expanded{position:fixed;left:16px;top:52px;width:520px;bottom:16px;max-height:none;z-index:200;}
+  .tl-panel.tl-expanded .tl-block{font-size:13px;padding:5px 8px;}
+  .tl-panel.tl-expanded .tl-block-title{white-space:normal;font-size:13px;line-height:1.4;}
+  .tl-panel.tl-expanded .tl-block-time{font-size:11px;}
+  .tl-panel.tl-expanded .tl-hour-label{font-size:11px;}
+  .tl-panel.tl-expanded .tl-allday-chip{font-size:12px;padding:4px 10px;}
+  .tl-panel.tl-expanded .tl-allday-label{font-size:10px;}
+  .tl-header{padding:14px 16px 10px;border-bottom:1px solid var(--border);flex-shrink:0;}
+  .tl-title{font-size:13px;font-weight:700;color:var(--green-dark);letter-spacing:0.5px;margin-bottom:8px;}
+  .tl-day-tabs{display:flex;gap:4px;}
+  .tl-day-tab{flex:1;padding:5px 4px;border-radius:8px;border:1.5px solid var(--border);font-size:10px;font-family:'DM Sans',sans-serif;font-weight:700;cursor:pointer;background:transparent;color:var(--text-muted);transition:all 0.15s;text-align:center;line-height:1.3;}
+  .tl-day-tab:hover{border-color:#bbb;color:var(--text);}
+  .tl-day-tab.active.fri{background:var(--day-fri-bg);border-color:var(--day-fri);color:var(--day-fri);}
+  .tl-day-tab.active.sat{background:var(--day-sat-bg);border-color:var(--day-sat);color:var(--day-sat);}
+  .tl-day-tab.active.sun{background:var(--day-sun-bg);border-color:var(--day-sun);color:var(--day-sun);}
+
+  /* TIMELINE SCROLL AREA */
+  .tl-scroll{overflow-y:auto;flex:1;position:relative;}
+  .tl-body{position:relative;padding:0 8px 16px 48px;}
+
+  /* HOUR LINES */
+  .tl-hour-lines{position:absolute;left:0;right:0;top:0;pointer-events:none;}
+  .tl-hour-line{position:absolute;left:40px;right:8px;height:1px;background:#F0EDE8;}
+  .tl-hour-label{position:absolute;left:4px;font-size:9px;font-weight:700;color:#BBB;transform:translateY(-6px);white-space:nowrap;}
+
+  /* ALL-DAY STRIP */
+  .tl-allday-zone{margin:8px 8px 4px 0;padding:6px 8px;background:#F9F7F2;border-radius:8px;border:1px dashed var(--border);min-height:28px;}
+  .tl-allday-label{font-size:9px;font-weight:700;color:#BBB;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+  .tl-allday-chips{display:flex;flex-wrap:wrap;gap:4px;min-height:22px;}
+  .tl-allday-chip{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:600;cursor:pointer;transition:all 0.15s;border:1.5px solid transparent;white-space:nowrap;}
+  .tl-allday-chip:hover{filter:brightness(0.92);}
+  .tl-allday-chip.highlighted{outline:2px solid var(--green-dark);outline-offset:1px;}
+
+  /* TIMED BLOCKS */
+  .tl-blocks-area{position:relative;}
+  .tl-block{position:absolute;left:0;right:0;border-radius:6px;padding:3px 6px;font-size:10px;font-weight:600;cursor:ns-resize;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.1);transition:box-shadow 0.15s,filter 0.15s;user-select:none;border-left:3px solid rgba(0,0,0,0.15);}
+  .tl-block.potential{border-left-style:dashed;opacity:0.85;}
+  .tl-block:hover{box-shadow:0 3px 10px rgba(0,0,0,0.15);filter:brightness(0.95);}
+  .tl-block.highlighted{outline:2px solid var(--green-dark);outline-offset:1px;}
+  .tl-block-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;}
+  .tl-block-time{font-size:9px;opacity:0.8;line-height:1.2;}
+  .tl-resize-handle{position:absolute;bottom:0;left:0;right:0;height:6px;cursor:ns-resize;background:rgba(0,0,0,0.1);border-radius:0 0 6px 6px;}
+
+  /* CARD TIME BADGE */
+  .card-time-badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;color:var(--green-dark);background:var(--confirmed-bg);padding:2px 7px;border-radius:10px;border:1px solid var(--green-light);}
+  .card-time-badge.allday{background:var(--potential-bg);color:var(--potential);border-color:var(--tan);}
+
+ 
+  /* DAY SECTION */
+  .day-section{margin-bottom:40px;}
+  .day-heading{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding:0 4px;}
+  .day-badge{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;}
+  .day-fri{background:var(--day-fri-bg);color:var(--day-fri);}
+  .day-sat{background:var(--day-sat-bg);color:var(--day-sat);}
+  .day-sun{background:var(--day-sun-bg);color:var(--day-sun);}
+  .day-title{font-size:18px;font-weight:600;color:var(--green-dark);font-family:'Playfair Display',serif;font-style:italic;}
+  .day-count{font-size:12px;color:var(--text-muted);margin-left:auto;}
+
+  /* DROP ZONE */
+  .card-grid{display:flex;flex-wrap:wrap;gap:14px;min-height:80px;border-radius:12px;padding:4px;align-items:stretch;}
+  .drop-placeholder{border:2px dashed var(--green-light);border-radius:14px;min-height:120px;width:278px;flex:1 1 278px;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+  .card-grid.dragging-over .drop-placeholder{opacity:0.45;}
+
+  /* ACTIVITY CARD */
+  .act-card{flex:1 1 278px;min-width:240px;max-width:420px;background:var(--white);border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,0.055);border:1px solid rgba(0,0,0,0.05);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow 0.2s,transform 0.2s,opacity 0.2s;cursor:grab;position:relative;}
+  .act-card:hover{box-shadow:0 6px 24px rgba(0,0,0,0.1);transform:translateY(-2px);}
+  .act-card.dragging{opacity:0.3;transform:scale(0.97);cursor:grabbing;pointer-events:none;}
+  .act-card.status-confirmed{border-left:4px solid var(--confirmed);}
+  .act-card.status-potential{border-left:4px solid var(--potential);}
+
+  /* drag handle */
+  .drag-handle{position:absolute;top:10px;left:10px;color:#CCC;font-size:14px;cursor:grab;line-height:1;padding:2px;user-select:none;}
+  .drag-handle:hover{color:#999;}
+
+  .card-top{padding:14px 14px 10px 30px;flex:1;}
+  .card-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px;}
+  .card-title{font-size:14px;font-weight:600;color:var(--green-dark);line-height:1.3;flex:1;}
+  .card-emoji{font-size:20px;flex-shrink:0;}
+  .card-desc{font-size:12px;line-height:1.6;color:#5A5248;margin-bottom:10px;}
+  .card-themes{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;}
+  .theme-pill{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:20px;}
+  .t-exercise  {background:var(--t-exercise-bg);  color:var(--t-exercise);}
+  .t-connection{background:var(--t-connection-bg);color:var(--t-connection);}
+  .t-fun       {background:var(--t-fun-bg);       color:var(--t-fun);}
+  .t-thoughtful{background:var(--t-thoughtful-bg);color:var(--t-thoughtful);}
+  .t-relaxation{background:var(--t-relaxation-bg);color:var(--t-relaxation);}
+  .t-food      {background:var(--t-food-bg);      color:var(--t-food);}
+
+  /* card meta */
+  .card-meta{display:flex;flex-wrap:wrap;gap:8px;padding:8px 14px;border-top:1px solid #F0EDE8;background:#FDFCFA;align-items:center;}
+  .meta-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-muted);}
+  .meta-val{font-weight:600;color:var(--text);}
+  .exertion-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0;}
+  .ex-low{background:var(--low-color);}  .ex-med{background:var(--med-color);}  .ex-high{background:var(--high-color);}
+
+  /* card footer */
+  .card-footer{display:flex;align-items:stretch;border-top:1px solid #F0EDE8;}
+
+  /* status toggle */
+  .status-toggle{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:8px 10px;font-size:11px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;background:#FAFAF7;}
+  .status-toggle:hover{filter:brightness(0.95);}
+  .status-toggle.confirmed{background:var(--confirmed-bg);color:var(--confirmed);}
+  .status-toggle.potential{background:var(--potential-bg);color:var(--potential);}
+
+  /* external link */
+  .card-link{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--green-dark);text-decoration:none;padding:8px 12px;background:#FAFAF7;border-left:1px solid #F0EDE8;white-space:nowrap;transition:background 0.15s;}
+  .card-link:hover{background:#F0EDE8;}
+
+  /* delete btn */
+  .card-del{display:flex;align-items:center;justify-content:center;padding:8px 10px;background:#FAFAF7;border:none;border-left:1px solid #F0EDE8;color:#CCC;cursor:pointer;font-size:15px;line-height:1;transition:all 0.15s;flex-shrink:0;}
+  .card-del:hover{background:#FFF0EE;color:#C0392B;}
+
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+  .modal-overlay.open{opacity:1;pointer-events:all;}
+  .modal{background:var(--white);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.2);width:100%;max-width:520px;max-height:90vh;overflow-y:auto;transform:translateY(12px);transition:transform 0.2s;}
+  .modal-overlay.open .modal{transform:translateY(0);}
+  .modal-header{padding:20px 22px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .modal-title{font-size:17px;font-weight:600;color:var(--green-dark);}
+  .modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-muted);line-height:1;padding:2px;}
+  .modal-close:hover{color:var(--text);}
+  .modal-body{padding:18px 22px;}
+  .form-row{margin-bottom:14px;}
+  .form-label{display:block;font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+  .form-input,.form-textarea,.form-select{width:100%;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:#FAFAF8;border:1px solid var(--border);border-radius:8px;padding:8px 11px;outline:none;transition:border-color 0.15s,box-shadow 0.15s;}
+  .form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--green-light);box-shadow:0 0 0 3px rgba(168,197,160,0.15);background:#fff;}
+  .form-textarea{min-height:80px;resize:vertical;line-height:1.55;}
+  .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .theme-checkboxes{display:flex;flex-wrap:wrap;gap:6px;}
+  .theme-cb-label{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);font-size:11px;font-weight:600;cursor:pointer;transition:all 0.15s;user-select:none;}
+  .theme-cb-label input{display:none;}
+  .theme-cb-label.checked-exercise  {background:var(--t-exercise-bg);  border-color:var(--t-exercise);  color:var(--t-exercise);}
+  .theme-cb-label.checked-connection{background:var(--t-connection-bg);border-color:var(--t-connection);color:var(--t-connection);}
+  .theme-cb-label.checked-fun       {background:var(--t-fun-bg);       border-color:var(--t-fun);       color:var(--t-fun);}
+  .theme-cb-label.checked-thoughtful{background:var(--t-thoughtful-bg);border-color:var(--t-thoughtful);color:var(--t-thoughtful);}
+  .theme-cb-label.checked-relaxation{background:var(--t-relaxation-bg);border-color:var(--t-relaxation);color:var(--t-relaxation);}
+  .theme-cb-label.checked-food      {background:var(--t-food-bg);      border-color:var(--t-food);      color:var(--t-food);}
+  .modal-footer{padding:14px 22px 18px;display:flex;justify-content:flex-end;gap:8px;}
+  .btn{padding:9px 20px;border-radius:20px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;border:none;transition:all 0.15s;}
+  .btn-ghost{background:#F0EDE8;color:var(--text-muted);}  .btn-ghost:hover{background:#E5E0D8;}
+  .btn-primary{background:var(--green-dark);color:#fff;}  .btn-primary:hover{background:var(--green-mid);}
+
+  /* INSERTION MARKER - thin vertical line between cards */
+  .insert-marker{
+    width:3px; min-height:120px; align-self:stretch;
+    border-radius:3px; background:var(--green-light);
+    flex-shrink:0; pointer-events:none;
+    box-shadow:0 0 8px rgba(168,197,160,0.6);
+    animation:markerPulse 0.8s ease-in-out infinite alternate;
+  }
+  @keyframes markerPulse{from{opacity:0.7;}to{opacity:1;}}
+
+  .footer{text-align:center;color:#C0B5A5;font-size:13px;margin-top:20px;font-family:'Playfair Display',serif;font-style:italic;}
+
+  /* ACTIVITY DETAIL OVERLAY */
+  #actDetailOverlay.open{opacity:1;pointer-events:all;}
+  #actDetailOverlay.open #actDetailCard{transform:scale(1) translateY(0);}
+  .detail-header{padding:22px 24px 0;display:flex;align-items:flex-start;gap:14px;}
+  .detail-emoji{font-size:40px;line-height:1;flex-shrink:0;margin-top:2px;}
+  .detail-title-block{flex:1;min-width:0;}
+  .detail-title{font-family:'Playfair Display',serif;font-style:italic;font-size:22px;font-weight:600;color:var(--green-dark);line-height:1.25;margin-bottom:6px;}
+  .detail-close{background:none;border:1.5px solid var(--border);border-radius:8px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-muted);font-size:16px;flex-shrink:0;margin-top:2px;transition:all 0.15s;}
+  .detail-close:hover{background:var(--border);color:var(--text);}
+  .detail-pills{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px;}
+  .detail-body{padding:16px 24px 24px;}
+  .detail-desc{font-size:14px;line-height:1.75;color:#4A4540;margin-bottom:18px;}
+  .detail-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+  .detail-meta-item{background:#F9F7F2;border-radius:10px;padding:10px 14px;}
+  .detail-meta-label{font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+  .detail-meta-val{font-size:13px;font-weight:600;color:var(--text);}
+  .detail-actions{display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:16px;}
+  .detail-action-btn{flex:1;min-width:120px;padding:9px 16px;border-radius:20px;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--text-muted);transition:all 0.15s;text-align:center;}
+  .detail-action-btn:hover{border-color:#bbb;color:var(--text);}
+  .detail-action-btn.primary{background:var(--green-dark);border-color:var(--green-dark);color:#fff;}
+  .detail-action-btn.primary:hover{background:var(--green-mid);}
+  .detail-action-btn.status-confirmed{background:var(--confirmed-bg);border-color:var(--confirmed);color:var(--confirmed);}
+  .detail-action-btn.status-potential{background:var(--potential-bg);border-color:var(--potential);color:var(--potential);}
+
+  /* MORE SUGGESTIONS BUTTON */
+  .suggest-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:20px;border:1.5px solid var(--tan);background:transparent;color:var(--green-dark);font-size:12px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:all 0.15s;flex-shrink:0;}
+  .suggest-btn:hover{background:var(--tan);color:#fff;}
+  .suggest-btn.loading{opacity:0.6;pointer-events:none;}
+
+  /* ARCHIVE BUTTON */
+  .archive-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--text-muted);font-size:12px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:all 0.15s;flex-shrink:0;}
+  .archive-btn:hover{border-color:#bbb;color:var(--text);}
+  .archive-badge{background:#aaa;color:#fff;border-radius:20px;font-size:10px;font-weight:700;padding:1px 6px;margin-left:2px;}
+
+  /* ARCHIVE SECTION */
+  .archive-section{max-width:880px;margin:0 auto;padding:0 16px 20px;}
+  .archive-header{display:flex;align-items:center;gap:10px;padding:14px 4px 10px;cursor:pointer;user-select:none;}
+  .archive-header-label{font-size:13px;font-weight:600;color:var(--text-muted);}
+  .archive-chevron{font-size:12px;color:var(--text-muted);transition:transform 0.2s;}
+  .archive-header.open .archive-chevron{transform:rotate(180deg);}
+  .archive-grid{display:flex;flex-wrap:wrap;gap:10px;padding-bottom:10px;}
+  .archive-card{flex:1 1 240px;max-width:340px;background:#F5F3EE;border-radius:10px;border:1px solid var(--border);padding:10px 12px;display:flex;gap:10px;align-items:flex-start;}
+  .archive-emoji{font-size:18px;flex-shrink:0;line-height:1.4;opacity:0.6;}
+  .archive-body{flex:1;min-width:0;}
+  .archive-title{font-size:12px;font-weight:600;color:#888;margin-bottom:4px;}
+  .archive-day{font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;text-transform:uppercase;letter-spacing:0.5px;display:inline-block;margin-bottom:4px;}
+  .restore-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:10px;border:1.5px solid var(--green-light);background:transparent;color:var(--green-dark);font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:all 0.15s;}
+  .restore-btn:hover{background:var(--green-light);}
+  .archive-del{background:none;border:none;color:#CCC;cursor:pointer;font-size:15px;line-height:1;padding:2px 4px;transition:color 0.15s;flex-shrink:0;}
+  .archive-del:hover{color:#C0392B;}
+
+  /* EDIT MODAL */
+  .edit-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+  .edit-modal-overlay.open{opacity:1;pointer-events:all;}
+  .edit-modal{background:var(--white);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.2);width:100%;max-width:520px;max-height:90vh;overflow-y:auto;transform:translateY(12px);transition:transform 0.2s;}
+  .edit-modal-overlay.open .edit-modal{transform:translateY(0);}
+
+  /* EDIT PENCIL on card */
+  .card-edit-btn{display:flex;align-items:center;justify-content:center;padding:8px 10px;background:#FAFAF7;border:none;border-left:1px solid #F0EDE8;color:#CCC;cursor:pointer;font-size:13px;line-height:1;transition:all 0.15s;flex-shrink:0;}
+  .card-edit-btn:hover{background:#F0EDE8;color:var(--green-dark);}
+
+  /* SUGGESTIONS MODAL */
+  .sug-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+  .sug-modal-overlay.open{opacity:1;pointer-events:all;}
+  .sug-modal{background:var(--white);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.2);width:100%;max-width:540px;max-height:90vh;overflow-y:auto;transform:translateY(12px);transition:transform 0.2s;}
+  .sug-modal-overlay.open .sug-modal{transform:translateY(0);}
+
+  /* day toggle pills */
+  .day-toggles{display:flex;gap:8px;flex-wrap:wrap;}
+  .day-toggle-btn{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);font-size:12px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;background:var(--white);color:var(--text-muted);transition:all 0.15s;}
+  .day-toggle-btn.sel-fri{background:var(--day-fri-bg);border-color:var(--day-fri);color:var(--day-fri);}
+  .day-toggle-btn.sel-sat{background:var(--day-sat-bg);border-color:var(--day-sat);color:var(--day-sat);}
+  .day-toggle-btn.sel-sun{background:var(--day-sun-bg);border-color:var(--day-sun);color:var(--day-sun);}
+
+  /* slider */
+  .slider-row{display:flex;align-items:center;gap:12px;}
+  .count-slider{flex:1;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:var(--border);outline:none;cursor:pointer;}
+  .count-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--green-dark);cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.2);}
+  .count-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--green-dark);cursor:pointer;border:2px solid #fff;}
+  .slider-val{font-size:15px;font-weight:700;color:var(--green-dark);min-width:20px;text-align:center;}
+
+  /* loading state in modal */
+  .sug-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;gap:14px;}
+  .sug-spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--green-dark);border-radius:50%;animation:spin 0.8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .sug-loading-text{color:var(--text-muted);font-size:13px;text-align:center;}
+
+  /* preview cards */
+  .preview-list{display:flex;flex-direction:column;gap:10px;padding:0 22px 4px;}
+  .preview-card{background:#F7F5F0;border-radius:12px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;border:1px solid var(--border);}
+  .preview-card-emoji{font-size:26px;flex-shrink:0;line-height:1.3;}
+  .preview-card-body{flex:1;min-width:0;}
+  .preview-card-title{font-size:15px;font-weight:600;color:var(--green-dark);margin-bottom:4px;}
+  .preview-card-desc{font-size:13px;color:#5A5248;line-height:1.6;margin-bottom:8px;}
+  .preview-card-meta{display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+  .preview-day-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;text-transform:uppercase;letter-spacing:0.5px;}
+  .preview-reject{background:none;border:none;color:#CCC;cursor:pointer;font-size:16px;line-height:1;padding:2px 4px;flex-shrink:0;margin-top:2px;transition:color 0.15s;}
+  .preview-reject:hover{color:#C0392B;}
+  .sug-error{color:#C0392B;font-size:13px;text-align:center;padding:20px;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="wedding-todo.html"       class="nav-btn">☑ To-Do List</a>
+  <a href="wedding-budget.html"     class="nav-btn">💰 Budget</a>
+  <a href="wedding-activities.html" class="nav-btn active">🎉 Activities</a>
+</nav>
+
+<div class="header">
+  <p class="header-eyebrow">18 · 19 · 20 December 2026</p>
+  <h1>Weekend Activities</h1>
+  <p class="header-sub">Hillbrook Farm &amp; Estate · Whangamata, Waikato</p>
+</div>
+
+<div class="toolbar">
+  <div class="toolbar-filters">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="day-fri">Friday</button>
+    <button class="filter-btn" data-filter="day-sat">Saturday</button>
+    <button class="filter-btn" data-filter="day-sun">Sunday</button>
+    <div class="toolbar-sep"></div>
+    <button class="filter-btn" data-filter="confirmed">Confirmed</button>
+    <button class="filter-btn" data-filter="potential">Potential</button>
+    <div class="toolbar-sep"></div>
+    <button class="filter-btn" data-filter="t-exercise">Exercise</button>
+    <button class="filter-btn" data-filter="t-connection">Connection</button>
+    <button class="filter-btn" data-filter="t-fun">Fun</button>
+    <button class="filter-btn" data-filter="t-relaxation">Relaxation</button>
+    <button class="filter-btn" data-filter="t-food">Food</button>
+    <button class="filter-btn" data-filter="t-thoughtful">Thoughtful</button>
+  </div>
+  <div class="toolbar-actions">
+    <button class="archive-btn" id="toggleArchiveBtn">📦 Archive <span class="archive-badge" id="archiveBadge">0</span></button>
+    <button class="suggest-btn" id="openSuggestModal">✨ More Suggestions</button>
+    <button class="add-activity-btn" id="openAddModal">＋ Add Activity</button>
+  </div>
+</div>
+
+<div class="page-layout">
+  <!-- TIMELINE PANEL -->
+  <div class="tl-panel" id="tlPanel">
+    <div class="tl-header">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div class="tl-title" style="margin-bottom:0">📅 Timeline</div>
+        <button id="tlExpandBtn" title="Expand timeline" style="background:none;border:1.5px solid var(--border);border-radius:8px;padding:3px 7px;cursor:pointer;font-size:12px;color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:600;transition:all 0.15s;line-height:1.4;">⤢</button>
+      </div>
+      <div class="tl-day-tabs">
+        <button class="tl-day-tab active fri" data-tl-day="day-fri">Fri<br>18 Dec</button>
+        <button class="tl-day-tab sat" data-tl-day="day-sat">Sat<br>19 Dec</button>
+        <button class="tl-day-tab sun" data-tl-day="day-sun">Sun<br>20 Dec</button>
+      </div>
+    </div>
+    <div class="tl-scroll" id="tlScroll">
+      <div id="tlAllDayZone" class="tl-allday-zone" style="margin:8px 8px 0 8px">
+        <div class="tl-allday-label">All day</div>
+        <div class="tl-allday-chips" id="tlAllDayChips"></div>
+      </div>
+      <div class="tl-body" id="tlBody">
+        <div class="tl-hour-lines" id="tlHourLines"></div>
+        <div class="tl-blocks-area" id="tlBlocksArea"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIVITY CARDS -->
+  <div class="main" id="main"></div>
+</div>
+
+<!-- ARCHIVE SECTION -->
+<div class="archive-section" id="archiveSection" style="display:none">
+  <div class="archive-header" id="archiveHeader">
+    <span class="archive-header-label">📦 Archived Activities</span>
+    <span class="archive-badge" id="archiveBadge2">0</span>
+    <span style="flex:1"></span>
+    <span class="archive-chevron">▼</span>
+  </div>
+  <div class="archive-grid" id="archiveGrid"></div>
+</div>
+
+<!-- EDIT ACTIVITY MODAL -->
+<div class="edit-modal-overlay" id="editModalOverlay">
+  <div class="edit-modal">
+    <div class="modal-header">
+      <span class="modal-title">Edit Activity</span>
+      <button class="modal-close" id="closeEditModal">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label class="form-label">Title</label>
+        <input class="form-input" id="e-title" placeholder="e.g. Morning Kayak" />
+      </div>
+      <div class="form-row-2">
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">Emoji</label>
+          <input class="form-input" id="e-emoji" placeholder="🎯" style="width:70px;" maxlength="4" />
+        </div>
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">Day</label>
+          <select class="form-select" id="e-day">
+            <option value="day-fri">Friday 18 Dec</option>
+            <option value="day-sat">Saturday 19 Dec</option>
+            <option value="day-sun">Sunday 20 Dec</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row" style="margin-top:14px">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" id="e-desc"></textarea>
+      </div>
+      <div class="form-row-2">
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">People</label>
+          <input class="form-input" id="e-people" placeholder="e.g. All guests" />
+        </div>
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">Cost estimate</label>
+          <input class="form-input" id="e-cost" placeholder="e.g. Free / ~$50" />
+        </div>
+      </div>
+      <div class="form-row-2" style="margin-top:14px">
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">Exertion level</label>
+          <select class="form-select" id="e-exertion">
+            <option value="low">Low</option>
+            <option value="med">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">Status</label>
+          <select class="form-select" id="e-status">
+            <option value="potential">Potential</option>
+            <option value="confirmed">Confirmed</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row" style="margin-top:14px">
+        <label class="form-label">Themes</label>
+        <div class="theme-checkboxes" id="editThemeCheckboxes"></div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">External link (optional)</label>
+        <input class="form-input" id="e-link" placeholder="https://…" />
+      </div>
+      <div class="form-row" style="margin-top:14px">
+        <label class="form-label">Timing</label>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer;user-select:none;">
+            <input type="checkbox" id="e-allday" style="width:14px;height:14px;cursor:pointer;accent-color:var(--green-dark);">
+            <span>All day</span>
+          </label>
+        </div>
+        <div id="e-time-inputs" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:end;">
+          <div>
+            <label class="form-label" style="margin-bottom:4px">Start time</label>
+            <input type="time" class="form-input" id="e-start" />
+          </div>
+          <div>
+            <label class="form-label" style="margin-bottom:4px">End time</label>
+            <input type="time" class="form-input" id="e-end" />
+          </div>
+          <div>
+            <button type="button" class="btn btn-ghost" id="e-clear-time" style="width:100%;font-size:11px;padding:8px 6px;">✕ Remove time</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="cancelEditModal">Cancel</button>
+      <button class="btn btn-primary" id="saveEditActivity">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD ACTIVITY MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Add New Activity</span>
+      <button class="modal-close" id="closeModal">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label class="form-label">Title</label>
+        <input class="form-input" id="f-title" placeholder="e.g. Morning Kayak" />
+      </div>
+      <div class="form-row-2">
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">Emoji</label>
+          <input class="form-input" id="f-emoji" placeholder="🎯" style="width:70px;" maxlength="4" />
+        </div>
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">Day</label>
+          <select class="form-select" id="f-day">
+            <option value="day-fri">Friday 18 Dec</option>
+            <option value="day-sat">Saturday 19 Dec</option>
+            <option value="day-sun">Sunday 20 Dec</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row" style="margin-top:14px">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" id="f-desc" placeholder="Describe the activity…"></textarea>
+      </div>
+      <div class="form-row-2">
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">People</label>
+          <input class="form-input" id="f-people" placeholder="e.g. All guests" />
+        </div>
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">Cost estimate</label>
+          <input class="form-input" id="f-cost" placeholder="e.g. Free / ~$50" />
+        </div>
+      </div>
+      <div class="form-row-2" style="margin-top:14px">
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">Exertion level</label>
+          <select class="form-select" id="f-exertion">
+            <option value="low">Low</option>
+            <option value="med">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">Status</label>
+          <select class="form-select" id="f-status">
+            <option value="potential">Potential</option>
+            <option value="confirmed">Confirmed</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row" style="margin-top:14px">
+        <label class="form-label">Themes</label>
+        <div class="theme-checkboxes" id="themeCheckboxes"></div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">External link (optional)</label>
+        <input class="form-input" id="f-link" placeholder="https://…" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="cancelModal">Cancel</button>
+      <button class="btn btn-primary" id="saveActivity">Add Activity</button>
+    </div>
+  </div>
+</div>
+
+<!-- MORE SUGGESTIONS MODAL -->
+<div class="sug-modal-overlay" id="sugModalOverlay">
+  <div class="sug-modal" id="sugModal">
+
+    <!-- STEP 1: Options form -->
+    <div id="sugStep1">
+      <div class="modal-header">
+        <span class="modal-title">✨ More Suggestions</span>
+        <button class="modal-close" id="closeSugModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <label class="form-label">Which days?</label>
+          <div class="day-toggles">
+            <button class="day-toggle-btn sel-fri" data-day="day-fri">Friday 18 Dec</button>
+            <button class="day-toggle-btn sel-sat" data-day="day-sat">Saturday 19 Dec</button>
+            <button class="day-toggle-btn sel-sun" data-day="day-sun">Sunday 20 Dec</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Themes (optional)</label>
+          <div class="theme-checkboxes" id="sugThemeCheckboxes"></div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-row" style="margin-bottom:0">
+            <label class="form-label">Max cost per activity</label>
+            <select class="form-select" id="sug-cost">
+              <option value="">Any</option>
+              <option value="free">Free only</option>
+              <option value="low">Low (~$20–50)</option>
+              <option value="medium">Medium (~$50–150)</option>
+              <option value="high">Higher ($150+)</option>
+            </select>
+          </div>
+          <div class="form-row" style="margin-bottom:0">
+            <label class="form-label">Group size</label>
+            <select class="form-select" id="sug-people">
+              <option value="">Any</option>
+              <option value="couple">Just the couple</option>
+              <option value="small">Small group (2–6)</option>
+              <option value="medium">Medium group (6–15)</option>
+              <option value="all">All guests (15+)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Keywords (optional)</label>
+          <input class="form-input" id="sug-keywords" placeholder="e.g. kayaking, photos, spa, sunset…" />
+        </div>
+        <div class="form-row">
+          <label class="form-label">How many suggestions? <span id="sugCountLabel" style="color:var(--green-dark);font-weight:700">3</span></label>
+          <div class="slider-row">
+            <span style="font-size:11px;color:var(--text-muted)">1</span>
+            <input type="range" class="count-slider" id="sugCountSlider" min="1" max="10" value="3">
+            <span style="font-size:11px;color:var(--text-muted)">10</span>
+            <span class="slider-val" id="sugCountVal">3</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="cancelSugModal">Cancel</button>
+        <button class="btn btn-primary" id="generateSuggestions">✨ Generate</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Loading -->
+    <div id="sugStep2" style="display:none">
+      <div class="modal-header">
+        <span class="modal-title">✨ Generating ideas…</span>
+      </div>
+      <div class="sug-loading">
+        <div class="sug-spinner"></div>
+        <p class="sug-loading-text">Coming up with ideas for your wedding weekend…</p>
+      </div>
+    </div>
+
+    <!-- STEP 3: Preview results -->
+    <div id="sugStep3" style="display:none">
+      <div class="modal-header">
+        <span class="modal-title">✨ Here are your suggestions</span>
+        <button class="modal-close" id="closeSugModal3">×</button>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);padding:12px 22px 4px">Review and dismiss any you don't want, then add the rest.</p>
+      <div id="sugPreviewList" class="preview-list"></div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="backToSugOptions">← Back</button>
+        <button class="btn btn-primary" id="addAllSuggestions">Add to Activities</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ACTIVITY DETAIL OVERLAY -->
+<div id="actDetailOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.2s;">
+  <div id="actDetailCard" style="background:var(--white);border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,0.22);width:100%;max-width:560px;max-height:88vh;overflow-y:auto;transform:scale(0.96) translateY(10px);transition:transform 0.2s;">
+    <div id="actDetailInner"></div>
+  </div>
+</div>
+
+<script>
+const SK = 'wedding-activities-v3';
+
+// ── DEFAULT DATA ──────────────────────────────────────────────────────────────
+const DEFAULT_ACTIVITIES = [
+  // FRIDAY — TL startH=14, so startMin=0→2pm, 60→3pm, 120→4pm, 180→5pm, 240→6pm, 300→7pm, 360→8pm, 420→9pm
+  {id:'f1',day:'day-fri',emoji:'🌿',title:'Estate Welcome Walk',startMin:60,durationMin:45,allDay:false,desc:"As guests arrive from 3pm, invite them on a relaxed guided walk around the grounds — point out the ceremony location, the views, and what's happening where. A lovely way to settle in before the ceremony.",themes:['connection','thoughtful'],people:'All guests',exertion:'low',cost:'Free',link:null,status:'confirmed'},
+  {id:'f2',day:'day-fri',emoji:'📸',title:'Polaroid Guest Wall',startMin:60,durationMin:480,allDay:true,desc:'Set up a Polaroid camera and a string wall near the welcome drinks. Guests take a photo on arrival, write a message on the border, and pin it up. Becomes a living memory wall through the night.',themes:['connection','thoughtful','fun'],people:'All guests',exertion:'low',cost:'~$100 (film)',link:'https://www.polaroid.com/pages/how-to-create-a-polaroid-wall',status:'potential'},
+  {id:'f3',day:'day-fri',emoji:'🥂',title:'Canapés & Lawn Games',startMin:60,durationMin:60,allDay:false,desc:'Lawn games (pétanque, croquet, giant Jenga) running alongside the canapé hour from 3–4pm. Relaxed, no pressure — gives guests something to do while they mingle before the ceremony starts.',themes:['fun','connection'],people:'All guests',exertion:'low',cost:'~$80 (hire or buy)',link:'https://www.bocce.co.nz',status:'confirmed'},
+  {id:'f4',day:'day-fri',emoji:'💍',title:'Ceremony',startMin:120,durationMin:60,allDay:false,desc:'The main event. Non-religious, personal, with Olivia as part of the celebration. Set in the farm grounds at 4pm. Followed immediately by more canapés and golden hour photos.',themes:['thoughtful','connection'],people:'All guests',exertion:'low',cost:'Included',link:null,status:'confirmed'},
+  {id:'f5',day:'day-fri',emoji:'🌅',title:'Golden Hour Photos & Wander',startMin:180,durationMin:90,allDay:false,desc:"After the ceremony, while formal photos are being taken, encourage guests to wander the estate, enjoy drinks, and soak in the December evening light. Whangamata sunsets are spectacular.",themes:['relaxation','connection'],people:'All guests',exertion:'low',cost:'Free',link:null,status:'confirmed'},
+  {id:'f6',day:'day-fri',emoji:'🎵',title:'Dinner Playlist & Dancing',startMin:270,durationMin:210,allDay:false,desc:'A carefully curated dinner playlist transitions into a dancing playlist as the night progresses. A Spotify playlist through a good Bluetooth speaker setup works beautifully for this vibe.',themes:['fun','connection'],people:'All guests',exertion:'med',cost:'~$50 (speaker hire)',link:'https://open.spotify.com/genre/wedding',status:'confirmed'},
+  {id:'f7',day:'day-fri',emoji:'🎲',title:'After-Dinner Board Games Corner',startMin:330,durationMin:150,allDay:false,desc:'Set up a table with 3–4 great party games (Codenames, Wavelength, Bananagrams, Coup) for guests who prefer games to dancing. Creates a lovely parallel social space.',themes:['fun','connection'],people:'4–12 per game',exertion:'low',cost:'~$60 (if buying)',link:'https://www.boardgamegeek.com/boardgame/178900/codenames',status:'confirmed'},
+  // SATURDAY — TL startH=7, so startMin=0→7am, 60→8am, 120→9am, 180→10am, 240→11am, 300→12pm, 360→1pm, 420→2pm, 480→3pm, 540→4pm, 600→5pm, 660→6pm, 720→7pm, 780→8pm, 840→9pm
+  {id:'s1',day:'day-sat',emoji:'☕',title:'Slow Brunch',startMin:180,durationMin:120,allDay:false,desc:'Catered brunch from 10am–12pm. Lay it out buffet-style so people drift in and out. Good coffee is essential. This sets the relaxed, unhurried tone for the whole day.',themes:['connection','food','relaxation'],people:'All guests',exertion:'low',cost:'Included',link:null,status:'confirmed'},
+  {id:'s2',day:'day-sat',emoji:'🏖️',title:'Beach Trip to Whangamata',startMin:300,durationMin:180,allDay:false,desc:"Whangamata beach is one of the best surf beaches on the Coromandel. A 10-min drive from Onemana. Swim, surf, boogie board, or just lie on the sand. Hire a few boards and bring a chilly bin.",themes:['exercise','fun','relaxation'],people:'Any',exertion:'med',cost:'~$40 (board hire)',link:'https://www.thecoromandel.com/destinations/whangamata/',status:'confirmed'},
+  {id:'s3',day:'day-sat',emoji:'🚴',title:'Cycle the Wentworth Valley Road',startMin:300,durationMin:150,allDay:false,desc:'A beautiful low-traffic country road through Wentworth Valley, about 15 minutes from Onemana. Flat to rolling, great scenery. Bike hire available in Whangamata.',themes:['exercise','connection'],people:'2–10',exertion:'med',cost:'~$40pp (bike hire)',link:'https://www.bikingwhangamata.co.nz',status:'potential'},
+  {id:'s4',day:'day-sat',emoji:'🥾',title:'Wentworth Falls Walk',startMin:300,durationMin:180,allDay:false,desc:'A classic Coromandel walk (approx 2.5 hrs return) through native bush to a stunning 70m waterfall. About 20 mins drive from the estate. Highly recommended.',themes:['exercise','connection'],people:'Any',exertion:'med',cost:'Free',link:'https://www.doc.govt.nz/parks-and-recreation/places-to-go/coromandel/places/whangamata-area/tracks/wentworth-valley-walks/',status:'potential'},
+  {id:'s5',day:'day-sat',emoji:'🃏',title:'Big Group Card & Board Game Session',startMin:480,durationMin:120,allDay:false,desc:'Bring out the big guns: Wavelength, Secret Hitler, Bananagrams, Codenames. Set up on a big table under shade outside. Cold drinks, good chat, and competitive energy.',themes:['fun','connection'],people:'6–20',exertion:'low',cost:'~$60 (games)',link:'https://www.boardgamegeek.com/boardgame/262543/wavelength',status:'confirmed'},
+  {id:'s6',day:'day-sat',emoji:'🏊',title:'Pool / Creek Dip',startMin:480,durationMin:90,allDay:false,desc:"If Hillbrook has a pool or the property backs onto a creek, a mid-afternoon swim is perfect after a walk or game session. Bring towels, float around, let Olivia splash.",themes:['relaxation','fun','exercise'],people:'Any',exertion:'low',cost:'Free',link:null,status:'potential'},
+  {id:'s7',day:'day-sat',emoji:'🌅',title:'Sunset Walk on the Estate',startMin:660,durationMin:60,allDay:false,desc:'A gentle group walk around the estate perimeter as the sun goes down. No agenda, just talking and walking. December sunsets in Whangamata are long and golden.',themes:['connection','relaxation','thoughtful'],people:'Any',exertion:'low',cost:'Free',link:null,status:'confirmed'},
+  {id:'s8',day:'day-sat',emoji:'🥩',title:'Evening BBQ',startMin:660,durationMin:120,allDay:false,desc:'The centrepiece of Saturday evening. Assign a grill master (or two), crank up a playlist, set up outdoor string lights, and let it run loose. Relaxed, communal, no seating plan.',themes:['food','connection','fun'],people:'All guests',exertion:'low',cost:'Included',link:null,status:'confirmed'},
+  {id:'s9',day:'day-sat',emoji:'🔥',title:'Bonfire & Stargazing',startMin:780,durationMin:120,allDay:false,desc:"If a fire pit or bonfire is possible on the estate, this is magic post-BBQ. Bring marshmallows, wrap Olivia up, and just sit around the fire talking. The Coromandel has minimal light pollution.",themes:['connection','thoughtful','relaxation'],people:'All guests',exertion:'low',cost:'~$20 (firewood)',link:'https://www.skymap.com',status:'potential'},
+  {id:'s10',day:'day-sat',emoji:'🎯',title:'Backyard Cricket or Touch Rugby',startMin:420,durationMin:90,allDay:false,desc:"A classic NZ afternoon — find a flat patch of grass on the estate and get a game going. Low stakes, lots of laughter. Works with any mix of ages and fitness levels.",themes:['exercise','fun','connection'],people:'6–20',exertion:'med',cost:'Free (bring a bat/ball)',link:null,status:'potential'},
+  {id:'s11',day:'day-sat',emoji:'🧘',title:'Morning Yoga on the Lawn',startMin:60,durationMin:45,allDay:false,desc:'Shi Wei leads a relaxed 30–45 min outdoor yoga session on the estate lawn before brunch. Optional for whoever wants it. All levels welcome.',themes:['exercise','relaxation','connection'],people:'4–15',exertion:'low',cost:'Free',link:'https://www.youtube.com/watch?v=v7AYKMP6rOE',status:'potential'},
+  // SUNDAY — TL startH=7, so startMin=0→7am, 60→8am, 120→9am, 180→10am, 240→11am, 300→12pm, 330→12:30pm
+  {id:'su1',day:'day-sun',emoji:'☕',title:'Continental Breakfast',startMin:120,durationMin:150,allDay:false,desc:"Simple, slow, 9am onwards. Good coffee, fresh fruit, pastries, yoghurt. Leave it out until 11am so people can drift in and out as they pack up.",themes:['food','connection','relaxation'],people:'All guests',exertion:'low',cost:'Included',link:null,status:'confirmed'},
+  {id:'su2',day:'day-sun',emoji:'🏃',title:'Morning Run Along the Coast',startMin:60,durationMin:60,allDay:false,desc:"For the early risers — a run down to Onemana Beach and along the coastal path. Beautiful December morning light, quiet roads, and a great way to feel alive before the drive home.",themes:['exercise','relaxation'],people:'2–8',exertion:'high',cost:'Free',link:'https://www.alltrails.com/new-zealand/waikato',status:'potential'},
+  {id:'su3',day:'day-sun',emoji:'🌊',title:'Final Swim at Onemana Beach',startMin:180,durationMin:60,allDay:false,desc:'Onemana is a small, sheltered beach a short walk or drive from Hillbrook. Perfect for a final morning swim before people head off.',themes:['exercise','relaxation'],people:'Any',exertion:'low',cost:'Free',link:'https://www.thecoromandel.com/destinations/onemana/',status:'confirmed'},
+  {id:'su4',day:'day-sun',emoji:'💌',title:'Group Photo & Thank You Moment',startMin:240,durationMin:30,allDay:false,desc:"Before people start leaving, gather everyone for a final group photo somewhere beautiful on the estate. Then Evan and Shi Wei say a few words of thanks. Low-key, genuine.",themes:['thoughtful','connection'],people:'All guests',exertion:'low',cost:'Free',link:null,status:'confirmed'},
+  {id:'su5',day:'day-sun',emoji:'📝',title:'Letter to Olivia',startMin:120,durationMin:90,allDay:false,desc:"Set up a small station with cards where guests can write a note to Olivia — something she can read when she's older. Could be advice, a memory from the weekend, or hopes for her life.",themes:['thoughtful','connection'],people:'All guests',exertion:'low',cost:'~$15 (cards & box)',link:null,status:'confirmed'},
+  {id:'su6',day:'day-sun',emoji:'🥏',title:'Final Frisbee / Swing on the Lawn',startMin:270,durationMin:60,allDay:false,desc:'Last blast of energy before the drive home. A frisbee, a swing set if available, or just kids and adults rolling around on the lawn. Keep it unstructured.',themes:['fun','exercise'],people:'Any',exertion:'med',cost:'Free',link:null,status:'potential'},
+];
+
+const DAYS_META = {
+  'day-fri':{ badge:'Friday 18 Dec',   badgeCls:'day-fri', title:'Wedding Day' },
+  'day-sat':{ badge:'Saturday 19 Dec', badgeCls:'day-sat', title:'The Big Day After' },
+  'day-sun':{ badge:'Sunday 20 Dec',   badgeCls:'day-sun', title:'Final Morning — Farewell' },
+};
+const DAY_ORDER = ['day-fri','day-sat','day-sun'];
+
+const THEME_META = {
+  exercise:   {label:'Exercise',   cls:'t-exercise'},
+  connection: {label:'Connection', cls:'t-connection'},
+  fun:        {label:'Fun',        cls:'t-fun'},
+  thoughtful: {label:'Thoughtful', cls:'t-thoughtful'},
+  relaxation: {label:'Relaxation', cls:'t-relaxation'},
+  food:       {label:'Food',       cls:'t-food'},
+};
+const EXERTION_META = {
+  low:{label:'Low',cls:'ex-low'}, med:{label:'Medium',cls:'ex-med'}, high:{label:'High',cls:'ex-high'}
+};
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+// ── SUPABASE SYNC ─────────────────────────────────────────────────────────────
+const SB_URL = 'https://xoqamngvqhgancbjmkvu.supabase.co';
+const SB_KEY = 'sb_publishable_rhkoY7C-OqoHJSYQSfsdVg_WQbiPfZg';
+
+async function sbFetch(path, opts) {
+  opts = opts || {};
+  const res = await fetch(SB_URL + path, {
+    method: opts.method || 'GET',
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': 'Bearer ' + SB_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || ''
+    },
+    body: opts.body || undefined
+  });
+  if (!res.ok) { const t = await res.text(); console.error('Supabase error:', res.status, t); return null; }
+  const txt = await res.text();
+  return txt ? JSON.parse(txt) : null;
+}
+
+async function loadFromSupabase(pageKey, stateRef, onLoaded) {
+  showSyncStatus('loading');
+  try {
+    const rows = await sbFetch('/rest/v1/wedding_state?page_key=eq.' + pageKey + '&select=state,updated_at');
+    if (rows && rows.length > 0 && rows[0].state) {
+      Object.assign(stateRef, rows[0].state);
+      lastUpdatedAt = rows[0].updated_at;
+    }
+  } catch(e) { console.warn('Supabase load failed, using defaults:', e); }
+  onLoaded();
+  hideSyncStatus();
+  startPolling(pageKey, stateRef, onLoaded);
+}
+
+async function saveToSupabase(pageKey, stateRef) {
+  showSyncStatus('saving');
+  try {
+    const body = JSON.stringify({ page_key: pageKey, state: stateRef, updated_at: new Date().toISOString() });
+    await sbFetch('/rest/v1/wedding_state', {
+      method: 'POST',
+      prefer: 'resolution=merge-duplicates',
+      body: body
+    });
+  } catch(e) { console.warn('Supabase save failed:', e); }
+  hideSyncStatus();
+}
+
+// Poll every 8s — picks up changes made by another user/device
+let lastUpdatedAt = null;
+function startPolling(pageKey, stateRef, onLoaded) {
+  setInterval(async function() {
+    try {
+      const rows = await sbFetch('/rest/v1/wedding_state?page_key=eq.' + pageKey + '&select=state,updated_at');
+      if (rows && rows.length > 0) {
+        if (lastUpdatedAt !== null && rows[0].updated_at !== lastUpdatedAt) {
+          Object.assign(stateRef, rows[0].state);
+          onLoaded();
+        }
+        lastUpdatedAt = rows[0].updated_at;
+      }
+    } catch(e) {}
+  }, 8000);
+}
+
+// Sync status pill
+function showSyncStatus(mode) {
+  var el = document.getElementById('syncStatus');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'syncStatus';
+    el.style.cssText = 'position:fixed;bottom:16px;right:16px;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:600;font-family:"DM Sans",sans-serif;z-index:9999;transition:opacity 0.4s;pointer-events:none;box-shadow:0 2px 8px rgba(0,0,0,0.1);';
+    document.body.appendChild(el);
+  }
+  el.style.opacity = '1';
+  if (mode === 'loading') {
+    el.style.background = '#EBF4FA'; el.style.color = '#4A7FA5';
+    el.textContent = '↓ Loading…';
+  } else {
+    el.style.background = '#EAF5EC'; el.style.color = '#3A7D55';
+    el.textContent = '✓ Saved';
+  }
+}
+function hideSyncStatus() {
+  setTimeout(function() {
+    var el = document.getElementById('syncStatus');
+    if (el) el.style.opacity = '0';
+  }, 1400);
+}
+
+let S = { activities: null, archived: [] };
+
+function persist() { saveToSupabase(SK, S); }
+
+function onStateLoaded() {
+  if (!S.activities) S.activities = JSON.parse(JSON.stringify(DEFAULT_ACTIVITIES));
+  render();
+  renderArchive();
+  updateArchiveBadge();
+  renderTimeline();
+}
+
+// ── DRAG STATE ────────────────────────────────────────────────────────────────
+let dragId = null;           // id of the card being dragged
+let insertMarkerId = null;   // id of card the marker is before (null = end)
+let markerDayId = null;      // which day grid the marker lives in
+
+// ── FILTER ────────────────────────────────────────────────────────────────────
+let activeFilter = 'all';
+
+function matchFilter(act) {
+  if (activeFilter === 'all') return true;
+  if (activeFilter === act.day) return true;
+  if (activeFilter === 'confirmed') return act.status === 'confirmed';
+  if (activeFilter === 'potential') return act.status === 'potential';
+  if (activeFilter.startsWith('t-')) return act.themes.includes(activeFilter.slice(2));
+  return false;
+}
+
+// ── DRAG HELPERS ──────────────────────────────────────────────────────────────
+function removeMarker() {
+  document.querySelectorAll('.insert-marker').forEach(m => m.remove());
+  document.querySelectorAll('.card-grid').forEach(g => g.classList.remove('dragging-over'));
+  insertMarkerId = null;
+  markerDayId = null;
+}
+
+// Find which card slot the cursor is nearest to in a flex-wrap grid.
+// Returns { beforeId } where beforeId is the id to insert before (null = append).
+function getInsertPosition(grid, clientX, clientY) {
+  const cards = [...grid.querySelectorAll('.act-card:not(.dragging)')];
+  if (cards.length === 0) return { beforeId: null };
+
+  let best = null;
+  let bestDist = Infinity;
+
+  for (const card of cards) {
+    const rect = card.getBoundingClientRect();
+    // Left edge of this card — distance from cursor to left edge
+    const leftEdgeDist = Math.hypot(clientX - rect.left, clientY - (rect.top + rect.height / 2));
+    // Right edge of this card
+    const rightEdgeDist = Math.hypot(clientX - rect.right, clientY - (rect.top + rect.height / 2));
+
+    if (leftEdgeDist < bestDist) {
+      bestDist = leftEdgeDist;
+      best = { beforeId: card.dataset.id };
+    }
+    if (rightEdgeDist < bestDist) {
+      bestDist = rightEdgeDist;
+      // inserting after this card = before the next card
+      const nextCard = card.nextElementSibling?.classList.contains('act-card')
+        ? card.nextElementSibling : null;
+      best = { beforeId: nextCard ? nextCard.dataset.id : null };
+    }
+  }
+  return best || { beforeId: null };
+}
+
+function placeMarker(grid, beforeId) {
+  // Don't re-place if nothing changed
+  if (markerDayId === grid.dataset.dayId && insertMarkerId === beforeId) return;
+
+  removeMarker();
+  grid.classList.add('dragging-over');
+
+  const marker = document.createElement('div');
+  marker.className = 'insert-marker';
+
+  if (beforeId) {
+    const ref = grid.querySelector(`[data-id="${beforeId}"]`);
+    if (ref) { grid.insertBefore(marker, ref); }
+    else { grid.insertBefore(marker, grid.querySelector('.drop-placeholder')); }
+  } else {
+    const ph = grid.querySelector('.drop-placeholder');
+    ph ? grid.insertBefore(marker, ph) : grid.appendChild(marker);
+  }
+
+  insertMarkerId = beforeId;
+  markerDayId = grid.dataset.dayId;
+}
+
+// Reorder S.activities: move draggedId to targetDay, before beforeId
+function reorder(draggedId, targetDay, beforeId) {
+  const dragged = S.activities.find(a => a.id === draggedId);
+  if (!dragged) return;
+  S.activities = S.activities.filter(a => a.id !== draggedId);
+  dragged.day = targetDay;
+
+  if (beforeId) {
+    const idx = S.activities.findIndex(a => a.id === beforeId);
+    if (idx !== -1) { S.activities.splice(idx, 0, dragged); return; }
+  }
+  // Append at end of this day's block
+  const lastIdx = S.activities.reduce((acc, a, i) => a.day === targetDay ? i : acc, -1);
+  S.activities.splice(lastIdx + 1, 0, dragged);
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function render() {
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+
+  DAY_ORDER.forEach(dayId => {
+    const dm = DAYS_META[dayId];
+    const acts = S.activities.filter(a => a.day === dayId && matchFilter(a));
+    const allDayActs = S.activities.filter(a => a.day === dayId);
+
+    if (activeFilter.startsWith('day-') && activeFilter !== dayId) return;
+
+    const section = document.createElement('div');
+    section.className = 'day-section';
+    section.dataset.dayId = dayId;
+
+    const dayHdr = document.createElement('div');
+    dayHdr.className = 'day-heading';
+    dayHdr.innerHTML = `
+      <span class="day-badge ${dm.badgeCls}">${dm.badge}</span>
+      <span class="day-title">${dm.title}</span>
+      <span class="day-count">${acts.length} of ${allDayActs.length} activit${allDayActs.length===1?'y':'ies'}</span>`;
+    section.appendChild(dayHdr);
+
+    const grid = document.createElement('div');
+    grid.className = 'card-grid';
+    grid.dataset.dayId = dayId;
+
+    grid.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      const { beforeId } = getInsertPosition(grid, e.clientX, e.clientY);
+      placeMarker(grid, beforeId);
+    });
+
+    grid.addEventListener('dragleave', e => {
+      if (!grid.contains(e.relatedTarget)) removeMarker();
+    });
+
+    grid.addEventListener('drop', e => {
+      e.preventDefault();
+      const targetBeforeId = insertMarkerId;
+      const targetDay = markerDayId || dayId;
+      removeMarker();
+      if (dragId) {
+        reorder(dragId, targetDay, targetBeforeId);
+        persist();
+        dragId = null;
+        render();
+      }
+    });
+
+    acts.forEach(act => {
+      const ex = EXERTION_META[act.exertion] || EXERTION_META.low;
+      const themesHtml = act.themes.map(t => {
+        const tm = THEME_META[t] || {};
+        return `<span class="theme-pill ${tm.cls || ''}">${tm.label || t}</span>`;
+      }).join('');
+
+      const card = document.createElement('div');
+      card.className = `act-card status-${act.status}`;
+      card.draggable = true;
+      card.dataset.id = act.id;
+
+      card.addEventListener('dragstart', e => {
+        dragId = act.id;
+        e.dataTransfer.effectAllowed = 'move';
+        setTimeout(() => card.classList.add('dragging'), 0);
+      });
+      card.addEventListener('dragend', () => {
+        card.classList.remove('dragging');
+        removeMarker();
+        dragId = null;
+      });
+      card.addEventListener('mouseenter', () => highlightTimelineBlock(act.id, true));
+      card.addEventListener('mouseleave', () => highlightTimelineBlock(act.id, false));
+      card.addEventListener('dblclick', e => { e.stopPropagation(); openDetail(act.id); });
+
+      const handle = document.createElement('div');
+      handle.className = 'drag-handle';
+      handle.innerHTML = '⠿';
+      handle.title = 'Drag to reorder or move to another day';
+
+      const top = document.createElement('div');
+      top.className = 'card-top';
+      top.innerHTML = `
+        <div class="card-title-row">
+          <span class="card-title">${act.title}</span>
+          <span class="card-emoji">${act.emoji}</span>
+        </div>
+        <p class="card-desc">${act.desc}</p>
+        <div class="card-themes">${themesHtml}</div>`;
+
+      const meta = document.createElement('div');
+      meta.className = 'card-meta';
+      meta.setAttribute('data-meta-id', act.id);
+      meta.innerHTML = `
+        <div class="meta-item"><span style="font-size:13px">👥</span><span class="meta-val">${act.people}</span></div>
+        <div class="meta-item"><span class="exertion-dot ${ex.cls}"></span><span class="meta-val">${ex.label}</span></div>
+        <div class="meta-item"><span style="font-size:13px">💵</span><span class="meta-val">${act.cost}</span></div>
+        ${buildTimeBadgeHTML(act)}`;
+
+      const cardFooter = document.createElement('div');
+      cardFooter.className = 'card-footer';
+
+      const statusBtn = document.createElement('button');
+      const isConfirmed = act.status === 'confirmed';
+      statusBtn.className = `status-toggle ${act.status}`;
+      statusBtn.innerHTML = isConfirmed ? '✓ Confirmed' : '◌ Potential';
+      statusBtn.title = 'Click to toggle status';
+      statusBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        act.status = isConfirmed ? 'potential' : 'confirmed';
+        persist(); render(); renderTimeline();
+      });
+      cardFooter.appendChild(statusBtn);
+
+      if (act.link) {
+        const link = document.createElement('a');
+        link.className = 'card-link';
+        link.href = act.link;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.innerHTML = '↗';
+        link.title = 'See example / how to set up';
+        link.addEventListener('click', e => e.stopPropagation());
+        cardFooter.appendChild(link);
+      }
+
+      // Edit button
+      const editBtn = document.createElement('button');
+      editBtn.className = 'card-edit-btn';
+      editBtn.innerHTML = '✏️';
+      editBtn.title = 'Edit activity';
+      editBtn.addEventListener('click', e => { e.stopPropagation(); openEditModal(act.id); });
+      cardFooter.appendChild(editBtn);
+
+      // Archive (was delete)
+      const del = document.createElement('button');
+      del.className = 'card-del';
+      del.innerHTML = '⬇';
+      del.title = 'Archive activity';
+      del.addEventListener('click', e => {
+        e.stopPropagation();
+        S.archived.push(act);
+        S.activities = S.activities.filter(a => a.id !== act.id);
+        persist(); render(); renderArchive();
+      });
+      cardFooter.appendChild(del);
+
+      card.appendChild(handle);
+      card.appendChild(top);
+      card.appendChild(meta);
+      card.appendChild(cardFooter);
+      grid.appendChild(card);
+    });
+
+    const ph = document.createElement('div');
+    ph.className = 'drop-placeholder';
+    if (acts.length === 0) ph.style.opacity = '0.5';
+    grid.appendChild(ph);
+
+    section.appendChild(grid);
+    main.appendChild(section);
+  });
+
+  const footer = document.createElement('p');
+  footer.className = 'footer';
+  footer.textContent = 'Made with love 🌿 · Hillbrook Farm, December 2026';
+  main.appendChild(footer);
+}
+
+// ── TIMELINE ──────────────────────────────────────────────────────────────────
+
+// Per-day config: start hour, end hour (24h), in minutes from midnight
+const TL_CONFIG = {
+  'day-fri': { startH: 14, endH: 24 },  // 2pm - midnight
+  'day-sat': { startH: 7,  endH: 23 },  // 7am - 11pm
+  'day-sun': { startH: 7,  endH: 14 },  // 7am - 2pm
+};
+const PX_PER_MIN = 1.6;  // pixels per minute
+const SNAP = 15;          // snap to 15-min intervals
+
+let tlDay = 'day-fri';
+let tlDragState = null;   // { id, type:'move'|'resize', startY, origStart, origDur }
+
+// ── COLOUR matches confirmed/potential pill colours on tiles ───
+// confirmed → green (matches --confirmed / --confirmed-bg)
+// potential → amber (matches --potential / --potential-bg)
+const STATUS_COLORS = {
+  confirmed: { bg:'#EAF5EC', fg:'#3A7D55', border:'#3A7D55' },
+  potential: { bg:'#FDF3E7', fg:'#C07830', border:'#C07830' },
+};
+function actColor(act) {
+  return STATUS_COLORS[act.status] || STATUS_COLORS.confirmed;
+}
+
+// ── Helpers ────────────────────────────────────────────────────
+function minToTimeStr(totalMin) {
+  const h = Math.floor(totalMin / 60) % 24;
+  const m = totalMin % 60;
+  const ampm = h >= 12 ? 'pm' : 'am';
+  const h12 = h % 12 || 12;
+  return `${h12}:${String(m).padStart(2,'0')}${ampm}`;
+}
+
+function buildTimeBadgeHTML(act) {
+  if (act.allDay) {
+    return `<span class="card-time-badge allday">🕐 All day</span>`;
+  }
+  if (act.startMin != null) {
+    const cfg = TL_CONFIG[act.day] || TL_CONFIG['day-fri'];
+    const startStr = minToTimeStr((cfg.startH * 60) + act.startMin);
+    const endStr = minToTimeStr((cfg.startH * 60) + act.startMin + (act.durationMin || 60));
+    return `<span class="card-time-badge">🕐 ${startStr}–${endStr}</span>`;
+  }
+  return '';  // No time data — show nothing
+}
+
+function refreshCardTimeBadge(actId) {
+  const act = S.activities.find(a => a.id === actId);
+  if (!act) return;
+  const meta = document.querySelector(`[data-meta-id="${actId}"]`);
+  if (!meta) return;
+  const existing = meta.querySelector('.card-time-badge');
+  const newBadgeHTML = buildTimeBadgeHTML(act);
+  if (newBadgeHTML) {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = newBadgeHTML;
+    const newBadge = tmp.firstChild;
+    if (existing) existing.replaceWith(newBadge);
+    else meta.insertAdjacentHTML('beforeend', newBadgeHTML);
+  } else {
+    if (existing) existing.remove();
+  }
+}
+
+function highlightTimelineBlock(actId, on) {
+  const block = document.querySelector(`.tl-block[data-act-id="${actId}"]`);
+  if (block) block.classList.toggle('highlighted', on);
+  const chip = document.querySelector(`.tl-allday-chip[data-act-id="${actId}"]`);
+  if (chip) chip.classList.toggle('highlighted', on);
+}
+
+// ── Render timeline ────────────────────────────────────────────
+function renderTimeline() {
+  const cfg = TL_CONFIG[tlDay];
+  const totalMin = (cfg.endH - cfg.startH) * 60;
+  const totalPx = totalMin * PX_PER_MIN;
+
+  const hourLines = document.getElementById('tlHourLines');
+  const blocksArea = document.getElementById('tlBlocksArea');
+  const chips = document.getElementById('tlAllDayChips');
+  hourLines.innerHTML = '';
+  blocksArea.innerHTML = '';
+  chips.innerHTML = '';
+
+  // Hour lines
+  hourLines.style.height = totalPx + 'px';
+  blocksArea.style.height = totalPx + 'px';
+  for (let h = cfg.startH; h <= cfg.endH; h++) {
+    const min = (h - cfg.startH) * 60;
+    const y = min * PX_PER_MIN;
+    const line = document.createElement('div');
+    line.className = 'tl-hour-line';
+    line.style.top = y + 'px';
+    hourLines.appendChild(line);
+    const label = document.createElement('div');
+    label.className = 'tl-hour-label';
+    label.style.top = y + 'px';
+    const h12 = h % 12 || 12;
+    label.textContent = h12 + (h < 12 || h === 24 ? 'am' : 'pm');
+    hourLines.appendChild(label);
+  }
+
+  // Get activities for this day
+  const dayActs = S.activities.filter(a => a.day === tlDay);
+
+  // All-day chips
+  const allDayActs = dayActs.filter(a => a.allDay);
+  allDayActs.forEach(act => {
+    const col = actColor(act);
+    const chip = document.createElement('div');
+    chip.className = 'tl-allday-chip';
+    chip.dataset.actId = act.id;
+    chip.style.background = col.bg;
+    chip.style.color = col.fg;
+    chip.style.borderColor = col.border;
+    if (act.status === 'potential') { chip.style.borderStyle = 'dashed'; chip.style.opacity = '0.85'; }
+    chip.textContent = act.emoji + ' ' + act.title;
+    chip.addEventListener('mouseenter', () => highlightCard(act.id, true));
+    chip.addEventListener('mouseleave', () => highlightCard(act.id, false));
+    chip.addEventListener('click', () => openEditModal(act.id));
+    chips.appendChild(chip);
+  });
+  if (!allDayActs.length) chips.innerHTML = '<span style="font-size:10px;color:#CCC;font-style:italic">None</span>';
+
+  // Timed blocks — compute columns for overlaps
+  const timedActs = dayActs.filter(a => !a.allDay && a.startMin != null);
+  // Assign column indices for parallel activities
+  const columns = assignColumns(timedActs);
+
+  timedActs.forEach(act => {
+    const col = actColor(act);
+    const y = act.startMin * PX_PER_MIN;
+    const h = Math.max((act.durationMin || 60) * PX_PER_MIN, 24);
+    const { colIdx, totalCols } = columns[act.id];
+    const colW = totalCols > 1 ? (100 / totalCols) : 100;
+    const colLeft = colIdx * colW;
+
+    const block = document.createElement('div');
+    block.className = 'tl-block' + (act.status === 'potential' ? ' potential' : '');
+    block.dataset.actId = act.id;
+    block.style.cssText = `top:${y}px;height:${h}px;left:${colLeft}%;width:${colW}%;background:${col.bg};color:${col.fg};border-left-color:${col.border};`;
+
+    const timeStr = minToTimeStr((cfg.startH * 60) + act.startMin) + '–' + minToTimeStr((cfg.startH * 60) + act.startMin + (act.durationMin || 60));
+    block.innerHTML = `<div class="tl-block-title">${act.emoji} ${act.title}</div><div class="tl-block-time">${timeStr}</div><div class="tl-resize-handle"></div>`;
+
+    // Hover syncs card
+    block.addEventListener('mouseenter', () => highlightCard(act.id, true));
+    block.addEventListener('mouseleave', () => highlightCard(act.id, false));
+    block.addEventListener('dblclick', e => { e.stopPropagation(); openDetail(act.id); });
+
+    // Move drag
+    block.addEventListener('mousedown', e => {
+      if (e.target.classList.contains('tl-resize-handle')) return;
+      e.preventDefault();
+      tlDragState = { id: act.id, type: 'move', startY: e.clientY, origStart: act.startMin };
+    });
+
+    // Resize drag
+    block.querySelector('.tl-resize-handle').addEventListener('mousedown', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      tlDragState = { id: act.id, type: 'resize', startY: e.clientY, origDur: act.durationMin || 60 };
+    });
+
+    blocksArea.appendChild(block);
+  });
+}
+
+// Assign column indices to overlapping timed activities
+function assignColumns(acts) {
+  const result = {};
+  const sorted = [...acts].sort((a,b) => a.startMin - b.startMin);
+  // Build groups of overlapping acts
+  const groups = [];
+  sorted.forEach(act => {
+    const end = act.startMin + (act.durationMin || 60);
+    let placed = false;
+    for (const grp of groups) {
+      if (grp.every(g => g.startMin >= end || (g.startMin + (g.durationMin||60)) <= act.startMin)) {
+        grp.push(act); placed = true; break;
+      }
+    }
+    if (!placed) groups.push([act]);
+  });
+  // For each act, find which group it's in and its column
+  sorted.forEach(act => {
+    const end = act.startMin + (act.durationMin || 60);
+    // Find all acts that overlap with this one
+    const overlapping = sorted.filter(other =>
+      other.id !== act.id &&
+      other.startMin < end &&
+      (other.startMin + (other.durationMin||60)) > act.startMin
+    );
+    const totalCols = overlapping.length + 1;
+    // Find column index: lowest col not taken by overlapping acts
+    const takenCols = overlapping.filter(o => result[o.id]).map(o => result[o.id].colIdx);
+    let colIdx = 0;
+    while (takenCols.includes(colIdx)) colIdx++;
+    result[act.id] = { colIdx, totalCols };
+  });
+  sorted.forEach(act => { if (!result[act.id]) result[act.id] = { colIdx:0, totalCols:1 }; });
+  return result;
+}
+
+function highlightCard(actId, on) {
+  const card = document.querySelector(`.act-card[data-id="${actId}"]`);
+  if (card) {
+    card.style.outline = on ? '2px solid var(--green-light)' : '';
+    card.style.outlineOffset = on ? '2px' : '';
+  }
+}
+
+// ── Timeline drag handling ─────────────────────────────────────
+document.addEventListener('mousemove', e => {
+  if (!tlDragState) return;
+  const cfg = TL_CONFIG[tlDay];
+  const totalMin = (cfg.endH - cfg.startH) * 60;
+  const dy = e.clientY - tlDragState.startY;
+  const dMin = Math.round((dy / PX_PER_MIN) / SNAP) * SNAP;
+  const act = S.activities.find(a => a.id === tlDragState.id);
+  if (!act) return;
+
+  if (tlDragState.type === 'move') {
+    const newStart = Math.max(0, Math.min(totalMin - (act.durationMin||60), tlDragState.origStart + dMin));
+    if (act.startMin !== newStart) {
+      act.startMin = newStart;
+      renderTimeline();
+      refreshCardTimeBadge(act.id);
+    }
+  } else if (tlDragState.type === 'resize') {
+    const newDur = Math.max(SNAP, Math.min(totalMin - act.startMin, tlDragState.origDur + dMin));
+    if (act.durationMin !== newDur) {
+      act.durationMin = newDur;
+      renderTimeline();
+      refreshCardTimeBadge(act.id);
+    }
+  }
+});
+
+document.addEventListener('mouseup', () => {
+  if (tlDragState) { persist(); tlDragState = null; }
+});
+
+// ── Day tab switching ──────────────────────────────────────────
+document.querySelectorAll('.tl-day-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    tlDay = tab.dataset.tlDay;
+    document.querySelectorAll('.tl-day-tab').forEach(t => {
+      t.classList.remove('active');
+    });
+    tab.classList.add('active');
+    renderTimeline();
+  });
+});
+
+// Time editing moved to edit modal
+
+// ── TIMELINE EXPAND ──────────────────────────────────────────────────────────
+let tlExpanded = false;
+document.getElementById('tlExpandBtn').addEventListener('click', () => {
+  tlExpanded = !tlExpanded;
+  const panel = document.getElementById('tlPanel');
+  const btn = document.getElementById('tlExpandBtn');
+  panel.classList.toggle('tl-expanded', tlExpanded);
+  btn.textContent = tlExpanded ? '⤡' : '⤢';
+  btn.title = tlExpanded ? 'Collapse timeline' : 'Expand timeline';
+});
+
+// ── ACTIVITY DETAIL OVERLAY ───────────────────────────────────────────────────
+const detailOverlay = document.getElementById('actDetailOverlay');
+const detailCard = document.getElementById('actDetailCard');
+const detailInner = document.getElementById('actDetailInner');
+
+function openDetail(actId) {
+  const act = S.activities.find(a => a.id === actId);
+  if (!act) return;
+  const ex = EXERTION_META[act.exertion] || EXERTION_META.low;
+  const dm = DAYS_META[act.day] || {};
+  const col = STATUS_COLORS[act.status] || STATUS_COLORS.confirmed;
+  const isConfirmed = act.status === 'confirmed';
+
+  const themesHtml = (act.themes || []).map(t => {
+    const tm = THEME_META[t] || {};
+    return `<span class="theme-pill ${tm.cls || ''}">${tm.label || t}</span>`;
+  }).join('');
+
+  const timeBadge = buildTimeBadgeHTML(act);
+  const timeRow = timeBadge ? `<div class="detail-meta-item"><div class="detail-meta-label">⏱ Time</div><div class="detail-meta-val">${act.allDay ? 'All day' : timeBadge.replace(/<[^>]+>/g,'').trim()}</div></div>` : '';
+
+  detailInner.innerHTML = `
+    <div class="detail-header">
+      <div class="detail-emoji">${act.emoji}</div>
+      <div class="detail-title-block">
+        <div class="detail-title">${act.title}</div>
+        <div class="detail-pills">
+          <span class="day-badge ${dm.badgeCls || ''}" style="font-size:10px">${dm.badge || ''}</span>
+          <span class="theme-pill" style="background:${col.bg};color:${col.fg};border:1px solid ${col.border}">${isConfirmed ? '✓ Confirmed' : '◌ Potential'}</span>
+          ${themesHtml}
+        </div>
+      </div>
+      <button class="detail-close" id="detailClose">×</button>
+    </div>
+    <div class="detail-body">
+      <p class="detail-desc">${act.desc}</p>
+      <div class="detail-meta-grid">
+        <div class="detail-meta-item"><div class="detail-meta-label">👥 People</div><div class="detail-meta-val">${act.people}</div></div>
+        <div class="detail-meta-item"><div class="detail-meta-label">💵 Cost</div><div class="detail-meta-val">${act.cost}</div></div>
+        <div class="detail-meta-item"><div class="detail-meta-label">⚡ Exertion</div><div class="detail-meta-val">${ex.label}</div></div>
+        ${timeRow}
+      </div>
+      <div class="detail-actions">
+        <button class="detail-action-btn status-${act.status}" id="detailToggleStatus">${isConfirmed ? '✓ Confirmed — click to change' : '◌ Potential — click to change'}</button>
+        <button class="detail-action-btn primary" id="detailEdit">✏️ Edit</button>
+        ${act.link ? `<a href="${act.link}" target="_blank" rel="noopener" class="detail-action-btn" style="text-decoration:none">↗ See link</a>` : ''}
+      </div>
+    </div>`;
+
+  document.getElementById('detailClose').addEventListener('click', closeDetail);
+  document.getElementById('detailEdit').addEventListener('click', () => { closeDetail(); openEditModal(actId); });
+  document.getElementById('detailToggleStatus').addEventListener('click', () => {
+    act.status = act.status === 'confirmed' ? 'potential' : 'confirmed';
+    persist(); render(); renderTimeline();
+    openDetail(actId); // re-render detail with new status
+  });
+
+  detailOverlay.classList.add('open');
+}
+
+function closeDetail() {
+  detailOverlay.classList.remove('open');
+}
+
+detailOverlay.addEventListener('click', e => { if (e.target === detailOverlay) closeDetail(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+
+// ── FILTER BUTTONS ────────────────────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeFilter = btn.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+  });
+});
+
+// ── ARCHIVE ────────────────────────────────────────────────────────────────────
+let archiveOpen = false;
+
+function updateArchiveBadge() {
+  const count = S.archived.length;
+  document.getElementById('archiveBadge').textContent = count;
+  document.getElementById('archiveBadge2').textContent = count;
+}
+
+function renderArchive() {
+  updateArchiveBadge();
+  const grid = document.getElementById('archiveGrid');
+  grid.innerHTML = '';
+
+  if (S.archived.length === 0) {
+    grid.innerHTML = '<p style="font-size:13px;color:var(--text-muted);padding:8px 4px">No archived activities.</p>';
+    return;
+  }
+
+  const dayMeta = {
+    'day-fri':{ label:'Friday', cls:'day-fri' },
+    'day-sat':{ label:'Saturday', cls:'day-sat' },
+    'day-sun':{ label:'Sunday', cls:'day-sun' },
+  };
+
+  S.archived.forEach((act, idx) => {
+    const dm = dayMeta[act.day] || dayMeta['day-fri'];
+    const card = document.createElement('div');
+    card.className = 'archive-card';
+    card.innerHTML = `
+      <div class="archive-emoji">${act.emoji||'🎉'}</div>
+      <div class="archive-body">
+        <div class="archive-title">${act.title}</div>
+        <span class="archive-day ${dm.cls}">${dm.label}</span>
+        <div style="margin-top:6px;display:flex;gap:6px;">
+          <button class="restore-btn" data-idx="${idx}">↑ Restore</button>
+        </div>
+      </div>
+      <button class="archive-del" data-idx="${idx}" title="Permanently delete">×</button>`;
+    grid.appendChild(card);
+  });
+
+  grid.querySelectorAll('.restore-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = parseInt(btn.dataset.idx);
+      const act = S.archived[i];
+      S.archived.splice(i, 1);
+      S.activities.push(act);
+      persist(); render(); renderArchive(); renderTimeline();
+    });
+  });
+
+  grid.querySelectorAll('.archive-del').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = parseInt(btn.dataset.idx);
+      if (confirm(`Permanently delete "${S.archived[i].title}"?`)) {
+        S.archived.splice(i, 1);
+        persist(); renderArchive();
+      }
+    });
+  });
+}
+
+// Archive toggle
+let archiveVisible = false;
+document.getElementById('toggleArchiveBtn').addEventListener('click', () => {
+  archiveVisible = !archiveVisible;
+  document.getElementById('archiveSection').style.display = archiveVisible ? '' : 'none';
+  if (archiveVisible) renderArchive();
+});
+
+// Archive header collapse
+document.getElementById('archiveHeader').addEventListener('click', () => {
+  document.getElementById('archiveHeader').classList.toggle('open');
+  const grid = document.getElementById('archiveGrid');
+  grid.style.display = grid.style.display === 'none' ? '' : 'none';
+});
+
+// ── EDIT MODAL ─────────────────────────────────────────────────────────────────
+const editOverlay = document.getElementById('editModalOverlay');
+let editingId = null;
+
+// Build edit theme checkboxes
+const editThemeContainer = document.getElementById('editThemeCheckboxes');
+Object.entries(THEME_META).forEach(([key, meta]) => {
+  const lbl = document.createElement('label');
+  lbl.className = 'theme-cb-label';
+  lbl.dataset.theme = key;
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.value = key;
+  cb.id = 'edit-theme-' + key;
+  cb.addEventListener('change', () => lbl.classList.toggle('checked-'+key, cb.checked));
+  lbl.appendChild(cb);
+  lbl.appendChild(document.createTextNode(meta.label));
+  editThemeContainer.appendChild(lbl);
+});
+
+function openEditModal(id) {
+  const act = S.activities.find(a => a.id === id);
+  if (!act) return;
+  editingId = id;
+
+  document.getElementById('e-title').value = act.title || '';
+  document.getElementById('e-emoji').value = act.emoji || '';
+  document.getElementById('e-day').value = act.day || 'day-fri';
+  document.getElementById('e-desc').value = act.desc || '';
+  document.getElementById('e-people').value = act.people || '';
+  document.getElementById('e-cost').value = act.cost || '';
+  document.getElementById('e-exertion').value = act.exertion || 'low';
+  document.getElementById('e-status').value = act.status || 'potential';
+  document.getElementById('e-link').value = act.link || '';
+
+  // Set timing fields
+  const cfg = TL_CONFIG[act.day] || TL_CONFIG['day-fri'];
+  const toTimeVal = (m) => { const h = String(Math.floor(m/60)%24).padStart(2,'0'); const mn = String(m%60).padStart(2,'0'); return `${h}:${mn}`; };
+  const isAllDay = !!act.allDay;
+  const hasTime = act.startMin != null && !isAllDay;
+  document.getElementById('e-allday').checked = isAllDay;
+  document.getElementById('e-start').value = hasTime ? toTimeVal((cfg.startH * 60) + act.startMin) : '';
+  document.getElementById('e-end').value = hasTime ? toTimeVal((cfg.startH * 60) + act.startMin + (act.durationMin || 60)) : '';
+  document.getElementById('e-time-inputs').style.display = isAllDay ? 'none' : 'grid';
+
+  document.getElementById('e-allday').onchange = function() {
+    document.getElementById('e-time-inputs').style.display = this.checked ? 'none' : 'grid';
+  };
+  document.getElementById('e-clear-time').onclick = function() {
+    document.getElementById('e-allday').checked = false;
+    document.getElementById('e-start').value = '';
+    document.getElementById('e-end').value = '';
+    document.getElementById('e-time-inputs').style.display = 'grid';
+  };
+
+  // Set theme checkboxes
+  editThemeContainer.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    const checked = (act.themes||[]).includes(cb.value);
+    cb.checked = checked;
+    const lbl = cb.closest('label');
+    Object.keys(THEME_META).forEach(k => lbl.classList.remove('checked-'+k));
+    if (checked) lbl.classList.add('checked-'+cb.value);
+  });
+
+  editOverlay.classList.add('open');
+}
+
+function closeEditModal() { editOverlay.classList.remove('open'); editingId = null; }
+
+document.getElementById('closeEditModal').addEventListener('click', closeEditModal);
+document.getElementById('cancelEditModal').addEventListener('click', closeEditModal);
+editOverlay.addEventListener('click', e => { if (e.target === editOverlay) closeEditModal(); });
+
+document.getElementById('saveEditActivity').addEventListener('click', () => {
+  const act = S.activities.find(a => a.id === editingId);
+  if (!act) return;
+
+  const title = document.getElementById('e-title').value.trim();
+  if (!title) { document.getElementById('e-title').focus(); return; }
+
+  act.title   = title;
+  act.emoji   = document.getElementById('e-emoji').value.trim() || act.emoji;
+  act.day     = document.getElementById('e-day').value;
+  act.desc    = document.getElementById('e-desc').value.trim();
+  act.people  = document.getElementById('e-people').value.trim();
+  act.cost    = document.getElementById('e-cost').value.trim();
+  act.exertion= document.getElementById('e-exertion').value;
+  act.status  = document.getElementById('e-status').value;
+  act.link    = document.getElementById('e-link').value.trim() || null;
+  const themes = [...editThemeContainer.querySelectorAll('input:checked')].map(c => c.value);
+  act.themes  = themes.length ? themes : act.themes;
+
+  // Save timing
+  const eCfg = TL_CONFIG[act.day] || TL_CONFIG['day-fri'];
+  const eAllDay = document.getElementById('e-allday').checked;
+  const eStart = document.getElementById('e-start').value;
+  const eEnd = document.getElementById('e-end').value;
+  if (eAllDay) {
+    act.allDay = true;
+    act.startMin = null;
+    act.durationMin = null;
+  } else if (eStart && eEnd) {
+    const [sh, sm] = eStart.split(':').map(Number);
+    const [eh, em] = eEnd.split(':').map(Number);
+    const startAbs = sh * 60 + sm;
+    const endAbs = eh * 60 + em;
+    act.allDay = false;
+    act.startMin = startAbs - eCfg.startH * 60;
+    act.durationMin = endAbs > startAbs ? endAbs - startAbs : 60;
+  } else if (!eStart && !eEnd) {
+    // Both cleared — remove timing entirely
+    act.allDay = false;
+    act.startMin = null;
+    act.durationMin = null;
+  }
+
+  persist();
+  closeEditModal();
+  render();
+  renderTimeline();
+});
+
+// ── ADD ACTIVITY MODAL ────────────────────────────────────────────────────────
+const modalOverlay = document.getElementById('modalOverlay');
+
+function openModal() { modalOverlay.classList.add('open'); }
+function closeModal() { modalOverlay.classList.remove('open'); resetForm(); }
+
+document.getElementById('openAddModal').addEventListener('click', openModal);
+document.getElementById('closeModal').addEventListener('click', closeModal);
+document.getElementById('cancelModal').addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+
+// Build theme checkboxes
+const themeContainer = document.getElementById('themeCheckboxes');
+Object.entries(THEME_META).forEach(([key, meta]) => {
+  const lbl = document.createElement('label');
+  lbl.className = 'theme-cb-label';
+  lbl.dataset.theme = key;
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.value = key;
+  cb.addEventListener('change', () => {
+    lbl.classList.toggle('checked-'+key, cb.checked);
+  });
+  lbl.appendChild(cb);
+  lbl.appendChild(document.createTextNode(meta.label));
+  themeContainer.appendChild(lbl);
+});
+
+function resetForm() {
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-emoji').value = '';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('f-people').value = '';
+  document.getElementById('f-cost').value = '';
+  document.getElementById('f-link').value = '';
+  document.getElementById('f-exertion').value = 'low';
+  document.getElementById('f-status').value = 'potential';
+  document.getElementById('f-day').value = 'day-fri';
+  themeContainer.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.checked = false;
+    cb.closest('label').classList.remove(...Object.keys(THEME_META).map(k=>'checked-'+k));
+  });
+}
+
+document.getElementById('saveActivity').addEventListener('click', () => {
+  const title = document.getElementById('f-title').value.trim();
+  if (!title) { document.getElementById('f-title').focus(); return; }
+  const themes = [...themeContainer.querySelectorAll('input:checked')].map(cb=>cb.value);
+  const newAct = {
+    id: 'custom-' + Date.now(),
+    day: document.getElementById('f-day').value,
+    emoji: document.getElementById('f-emoji').value.trim() || '🎉',
+    title,
+    desc: document.getElementById('f-desc').value.trim() || '',
+    themes: themes.length ? themes : ['fun'],
+    people: document.getElementById('f-people').value.trim() || 'Any',
+    exertion: document.getElementById('f-exertion').value,
+    cost: document.getElementById('f-cost').value.trim() || 'TBC',
+    link: document.getElementById('f-link').value.trim() || null,
+    status: document.getElementById('f-status').value,
+  };
+  S.activities.push(newAct);
+  persist();
+  renderTimeline();
+  closeModal();
+  // Switch filter to 'all' so the new activity is visible
+  activeFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  render();
+});
+
+
+// ── MORE SUGGESTIONS MODAL ─────────────────────────────────────────────────
+const sugOverlay = document.getElementById('sugModalOverlay');
+let pendingSuggestions = []; // holds generated activities before user confirms
+
+// Build theme checkboxes for suggestions modal
+const sugThemeContainer = document.getElementById('sugThemeCheckboxes');
+Object.entries(THEME_META).forEach(([key, meta]) => {
+  const lbl = document.createElement('label');
+  lbl.className = 'theme-cb-label';
+  lbl.dataset.theme = key;
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.value = key;
+  cb.addEventListener('change', () => lbl.classList.toggle('checked-'+key, cb.checked));
+  lbl.appendChild(cb);
+  lbl.appendChild(document.createTextNode(meta.label));
+  sugThemeContainer.appendChild(lbl);
+});
+
+// Day toggles
+const dayToggleBtns = document.querySelectorAll('.day-toggle-btn');
+const selectedDays = new Set(['day-fri','day-sat','day-sun']);
+const dayCls = {'day-fri':'sel-fri','day-sat':'sel-sat','day-sun':'sel-sun'};
+dayToggleBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const d = btn.dataset.day;
+    if (selectedDays.has(d)) {
+      if (selectedDays.size > 1) { selectedDays.delete(d); btn.classList.remove(dayCls[d]); }
+    } else {
+      selectedDays.add(d); btn.classList.add(dayCls[d]);
+    }
+  });
+});
+
+// Slider
+const slider = document.getElementById('sugCountSlider');
+const sliderLabel = document.getElementById('sugCountLabel');
+const sliderVal = document.getElementById('sugCountVal');
+slider.addEventListener('input', () => {
+  sliderLabel.textContent = slider.value;
+  sliderVal.textContent = slider.value;
+});
+
+function showSugStep(n) {
+  [1,2,3].forEach(i => document.getElementById('sugStep'+i).style.display = i===n ? '' : 'none');
+}
+
+function openSugModal() { sugOverlay.classList.add('open'); showSugStep(1); }
+function closeSugModal() { sugOverlay.classList.remove('open'); pendingSuggestions = []; }
+
+document.getElementById('openSuggestModal').addEventListener('click', openSugModal);
+document.getElementById('closeSugModal').addEventListener('click', closeSugModal);
+document.getElementById('closeSugModal3').addEventListener('click', closeSugModal);
+document.getElementById('cancelSugModal').addEventListener('click', closeSugModal);
+sugOverlay.addEventListener('click', e => { if (e.target === sugOverlay) closeSugModal(); });
+document.getElementById('backToSugOptions').addEventListener('click', () => showSugStep(1));
+
+// ── Generate button ────────────────────────────────────────────────────────
+document.getElementById('generateSuggestions').addEventListener('click', async () => {
+  const days = [...selectedDays];
+  const themes = [...sugThemeContainer.querySelectorAll('input:checked')].map(c => c.value);
+  const cost = document.getElementById('sug-cost').value;
+  const people = document.getElementById('sug-people').value;
+  const keywords = document.getElementById('sug-keywords').value.trim();
+  const count = parseInt(slider.value);
+
+  // Build existing titles to avoid duplicates
+  const existingTitles = S.activities.map(a => a.title).join(', ');
+
+  const dayLabels = {
+    'day-fri': 'Friday 18 Dec (Wedding Day — ceremony at 4pm, canapés, buffet dinner)',
+    'day-sat': 'Saturday 19 Dec (Post-wedding day — catered brunch 10am–12pm, relaxed afternoon, evening BBQ)',
+    'day-sun': 'Sunday 20 Dec (Final morning — continental breakfast 9am–12:30pm, then guests leave)'
+  };
+
+  const costDesc = {
+    '': 'any cost', free: 'free only', low: 'low cost (~$20–50 NZD)',
+    medium: 'medium cost (~$50–150 NZD)', high: 'higher budget ($150+ NZD)'
+  };
+  const peopleDesc = {
+    '': 'any group size', couple: 'just the couple', small: 'small group (2–6 people)',
+    medium: 'medium group (6–15 people)', all: 'all guests (15+ people)'
+  };
+
+  const prompt = `You are a creative wedding planner helping suggest activities for a wedding weekend at Hillbrook Farm & Estate, Whangamata (Onemana), Waikato, New Zealand in December 2026.
+
+Context about the couple:
+- Evan (33, aerospace engineer): loves swimming, board games, reading, hanging out with friends
+- Shi Wei (33): loves running, yoga, good food, relaxation
+- Baby Olivia will be 1 year old
+- They want a relaxed, low-stress atmosphere focused on connection with friends and family
+- The venue is a farm estate near the beach (Onemana/Whangamata area, Coromandel)
+- December = NZ midsummer, warm and sunny
+
+Please suggest exactly ${count} NEW activity idea${count>1?'s':''} for the following days: ${days.map(d=>dayLabels[d]).join('; ')}.
+
+Constraints:
+${themes.length ? `- Themes to include: ${themes.join(', ')}` : '- Any themes welcome'}
+- Cost: ${costDesc[cost] || 'any'}
+- Group size: ${peopleDesc[people] || 'any'}
+${keywords ? `- Must relate to: ${keywords}` : ''}
+- Do NOT suggest any of these already-existing activities: ${existingTitles}
+- Suggestions should be practical, specific, and achievable at or near a Whangamata farm estate in summer
+- Lean into the local area (Coromandel beaches, bush walks, local food/produce, farm setting)
+
+Respond ONLY with a valid JSON array, no preamble, no markdown fences. Each item must have exactly these fields:
+{
+  "day": "day-fri" | "day-sat" | "day-sun",
+  "emoji": "<single emoji>",
+  "title": "<short title>",
+  "desc": "<1-2 sentence description, practical and vivid>",
+  "themes": ["exercise"|"connection"|"fun"|"thoughtful"|"relaxation"|"food"],
+  "people": "<e.g. All guests / 2–8 / Any>",
+  "exertion": "low" | "med" | "high",
+  "cost": "<e.g. Free / ~$30 / Included>",
+  "link": null | "<relevant URL>",
+  "status": "potential"
+}`;
+
+  showSugStep(2);
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4096,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    if (!res.ok) throw new Error('API error ' + res.status);
+    const data = await res.json();
+    const raw = (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+    // Strip any accidental markdown fences
+    const clean = raw.replace(/```json|```/g,'').trim();
+    let suggestions = JSON.parse(clean);
+    if (!Array.isArray(suggestions)) throw new Error('Expected array');
+
+    // Assign IDs and ensure valid day values
+    suggestions = suggestions.map((s, i) => ({
+      ...s,
+      id: 'ai-' + Date.now() + '-' + i,
+      day: days.includes(s.day) ? s.day : days[0],
+      themes: Array.isArray(s.themes) ? s.themes.filter(t => THEME_META[t]) : ['fun'],
+      exertion: ['low','med','high'].includes(s.exertion) ? s.exertion : 'low',
+      status: 'potential',
+    }));
+
+    pendingSuggestions = suggestions;
+    renderPreview(suggestions);
+    showSugStep(3);
+
+  } catch(err) {
+    showSugStep(3);
+    document.getElementById('sugPreviewList').innerHTML =
+      `<div class="sug-error">Something went wrong generating suggestions. Please try again.<br><small>${err.message}</small></div>`;
+  }
+});
+
+function renderPreview(suggestions) {
+  const list = document.getElementById('sugPreviewList');
+  list.innerHTML = '';
+
+  if (!suggestions.length) {
+    list.innerHTML = '<div class="sug-error">No suggestions were generated. Try adjusting your options.</div>';
+    return;
+  }
+
+  const dayMeta = {
+    'day-fri': { label:'Friday', cls:'day-fri' },
+    'day-sat': { label:'Saturday', cls:'day-sat' },
+    'day-sun': { label:'Sunday', cls:'day-sun' },
+  };
+
+  suggestions.forEach((act, idx) => {
+    const dm = dayMeta[act.day] || dayMeta['day-fri'];
+    const themesHtml = (act.themes||[]).map(t => {
+      const tm = THEME_META[t]||{};
+      return `<span class="theme-pill ${tm.cls||''}" style="font-size:11px">${tm.label||t}</span>`;
+    }).join('');
+
+    const card = document.createElement('div');
+    card.className = 'preview-card';
+    card.dataset.idx = idx;
+
+    card.innerHTML = `
+      <div class="preview-card-emoji">${act.emoji||'🎉'}</div>
+      <div class="preview-card-body">
+        <div class="preview-card-title">${act.title}</div>
+        <div class="preview-card-desc">${act.desc}</div>
+        <div class="preview-card-meta">
+          <span class="preview-day-tag ${dm.cls}">${dm.label}</span>
+          ${themesHtml}
+          <span style="font-size:12px;color:var(--text-muted);margin-left:2px">· ${act.cost} · ${act.people}</span>
+        </div>
+      </div>
+      <button class="preview-reject" data-idx="${idx}" title="Dismiss this suggestion">×</button>`;
+
+    list.appendChild(card);
+  });
+
+  // Dismiss buttons
+  list.querySelectorAll('.preview-reject').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = parseInt(btn.dataset.idx);
+      pendingSuggestions[i] = null;
+      btn.closest('.preview-card').style.cssText = 'opacity:0.35;pointer-events:none;text-decoration:line-through;';
+    });
+  });
+}
+
+// Add surviving suggestions to activities list
+document.getElementById('addAllSuggestions').addEventListener('click', () => {
+  const toAdd = pendingSuggestions.filter(Boolean);
+  if (!toAdd.length) { closeSugModal(); return; }
+  S.activities.push(...toAdd);
+  persist();
+  renderTimeline();
+  closeSugModal();
+  // Reset filter to all so new cards are visible
+  activeFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');
+  render();
+});
+
+// Boot: load from Supabase, then render
+loadFromSupabase(SK, S, onStateLoaded);
+</script>
+</body>
+</html>

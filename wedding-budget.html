@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evan & Shi Wei — Wedding Budget</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-dark: #2C3E2D;
+    --green-mid: #4A5E3A;
+    --green-light: #A8C5A0;
+    --tan: #C4B99A;
+    --cream: #FAF7F2;
+    --white: #fff;
+    --text: #2C2820;
+    --text-muted: #999;
+    --border: #EDE9E2;
+    --estimate: #7A7355;
+    --estimate-bg: #F5F2E8;
+    --topay: #4A7FA5;
+    --topay-bg: #EBF4FA;
+    --paid: #3A7D55;
+    --paid-bg: #EAF5EC;
+    --red: #C0392B;
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--cream); font-family:'DM Sans',sans-serif; color:var(--text); min-height:100vh; }
+
+  /* ── NAV ── */
+  .nav {
+    background:rgba(44,62,45,0.97); backdrop-filter:blur(8px);
+    display:flex; justify-content:center; gap:4px; padding:10px 16px;
+    position:sticky; top:0; z-index:300;
+  }
+  .nav-btn {
+    padding:7px 20px; border-radius:20px; border:none; font-size:13px;
+    font-family:'DM Sans',sans-serif; font-weight:500; cursor:pointer;
+    color:rgba(255,255,255,0.6); background:transparent; transition:all 0.15s;
+    text-decoration:none; display:inline-flex; align-items:center; gap:6px;
+  }
+  .nav-btn:hover { color:#fff; background:rgba(255,255,255,0.1); }
+  .nav-btn.active { background:rgba(255,255,255,0.15); color:#fff; }
+
+  /* ── HEADER ── */
+  .header {
+    background:linear-gradient(135deg,#2C3E2D 0%,#4A5E3A 60%,#6B7C5A 100%);
+    padding:48px 24px 40px; text-align:center; position:relative; overflow:hidden;
+  }
+  .header::before {
+    content:''; position:absolute; inset:0;
+    background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,transparent 1px);
+    background-size:24px 24px;
+  }
+  .header-eyebrow { color:var(--tan); font-size:11px; letter-spacing:5px; text-transform:uppercase; margin-bottom:14px; position:relative; }
+  .header h1 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(28px,6vw,48px); color:var(--cream); font-weight:400; margin-bottom:8px; position:relative; }
+  .header-sub { color:var(--green-light); font-size:14px; margin-bottom:32px; position:relative; }
+
+  /* overall summary */
+  .budget-summary {
+    display:flex; gap:12px; flex-wrap:wrap; justify-content:center;
+    position:relative; max-width:600px; margin:0 auto;
+  }
+  .summary-pill {
+    background:rgba(255,255,255,0.12); border-radius:12px; padding:12px 20px;
+    text-align:center; min-width:120px; flex:1;
+  }
+  .summary-pill .sp-label { color:rgba(255,255,255,0.55); font-size:10px; letter-spacing:2px; text-transform:uppercase; margin-bottom:5px; }
+  .summary-pill .sp-val { color:#fff; font-size:18px; font-weight:600; }
+  .summary-pill.sp-paid .sp-val { color:#A8D5B8; }
+  .summary-pill.sp-topay .sp-val { color:#A8D0E6; }
+  .summary-pill.sp-remaining .sp-val { color:var(--tan); }
+
+  /* budget bar */
+  .bbar-wrap { max-width:440px; margin:20px auto 0; position:relative; }
+  .bbar-labels { display:flex; justify-content:space-between; margin-bottom:6px; }
+  .bbar-labels span { color:rgba(255,255,255,0.5); font-size:11px; }
+  .bbar-labels span:last-child { color:var(--cream); font-weight:600; font-size:12px; }
+  .bbar-track { height:8px; background:rgba(255,255,255,0.15); border-radius:4px; overflow:hidden; display:flex; }
+  .bbar-paid  { background:#6BBF8E; height:100%; transition:width 0.4s; }
+  .bbar-topay { background:#6BAFD6; height:100%; transition:width 0.4s; }
+  .bbar-over  { background:#E07060; height:100%; transition:width 0.4s; }
+
+  /* ── MAIN ── */
+  .main { max-width:760px; margin:28px auto 0; padding:0 16px 80px; }
+
+  /* section card */
+  .bcat { background:var(--white); border-radius:14px; margin-bottom:16px; box-shadow:0 2px 14px rgba(0,0,0,0.055); border:1px solid rgba(0,0,0,0.055); overflow:hidden; }
+  .bcat-header { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; cursor:pointer; user-select:none; transition:background 0.15s; }
+  .bcat-header:hover { background:#FDFCFA; }
+  .bcat-left { display:flex; align-items:center; gap:10px; }
+  .bcat-emoji { font-size:19px; }
+  .bcat-title { font-size:15px; font-weight:600; color:var(--green-dark); }
+  .bcat-right { display:flex; align-items:center; gap:10px; }
+  .bcat-total { font-size:13px; font-weight:600; color:var(--green-dark); }
+  .bcat-chevron { color:#bbb; font-size:16px; transition:transform 0.22s; display:inline-block; line-height:1; }
+  .bcat-chevron.closed { transform:rotate(-90deg); }
+
+  .bcat-body { border-top:1px solid var(--border); }
+
+  /* section summary bar */
+  .bcat-summary {
+    display:flex; gap:10px; padding:10px 20px; background:#FAFAF7;
+    border-bottom:1px solid var(--border); flex-wrap:wrap;
+  }
+  .bcat-sum-item { font-size:11px; display:flex; align-items:center; gap:5px; }
+  .bcat-sum-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .bcat-sum-label { color:var(--text-muted); }
+  .bcat-sum-val { font-weight:600; color:var(--text); }
+
+  /* expense row */
+  .expense-row {
+    display:grid;
+    grid-template-columns: 1fr 120px 90px 28px;
+    align-items:center; gap:8px;
+    padding:10px 20px; border-bottom:1px solid #F7F4F0;
+    transition:background 0.1s;
+  }
+  .expense-row:hover { background:#FDFCFA; }
+  .expense-row:last-of-type { border-bottom:none; }
+
+  .exp-name {
+    font-size:13px; color:var(--text); background:transparent; border:none;
+    outline:none; font-family:'DM Sans',sans-serif; width:100%;
+    border-bottom:1px solid transparent; padding:2px 0; transition:border-color 0.15s;
+  }
+  .exp-name:focus { border-bottom-color:var(--border); }
+  .exp-name::placeholder { color:#CCC; }
+
+  .exp-amount-wrap { display:flex; align-items:center; gap:3px; }
+  .exp-currency { font-size:12px; color:var(--text-muted); flex-shrink:0; }
+  .exp-amount {
+    font-size:13px; font-weight:600; color:var(--text);
+    background:transparent; border:none; outline:none;
+    font-family:'DM Sans',sans-serif; width:100%;
+    border-bottom:1px solid transparent; padding:2px 0; text-align:right;
+    transition:border-color 0.15s;
+  }
+  .exp-amount:focus { border-bottom-color:var(--border); }
+
+  /* status pill */
+  .status-wrap { position:relative; }
+  .status-pill {
+    display:inline-flex; align-items:center; gap:4px;
+    padding:3px 9px; border-radius:20px; font-size:11px; font-weight:600;
+    border:none; cursor:pointer; font-family:'DM Sans',sans-serif;
+    transition:filter 0.15s; white-space:nowrap; width:100%; justify-content:center;
+  }
+  .status-pill:hover { filter:brightness(0.93); }
+  .sp-estimate { background:var(--estimate-bg); color:var(--estimate); }
+  .sp-topay    { background:var(--topay-bg);    color:var(--topay); }
+  .sp-paid     { background:var(--paid-bg);     color:var(--paid); }
+
+  .status-dd {
+    position:absolute; top:calc(100% + 4px); left:50%; transform:translateX(-50%);
+    z-index:200; background:var(--white); border:1px solid var(--border);
+    border-radius:10px; box-shadow:0 6px 24px rgba(0,0,0,0.13);
+    overflow:hidden; min-width:110px; display:none;
+  }
+  .status-dd.open { display:block; }
+  .status-opt { padding:8px 14px; font-size:13px; cursor:pointer; font-weight:500; transition:background 0.1s; white-space:nowrap; }
+  .status-opt:hover { background:#F7F4F0; }
+
+  /* delete */
+  .exp-del {
+    background:none; border:none; cursor:pointer; color:#DDD; font-size:16px;
+    line-height:1; padding:2px; transition:color 0.15s; flex-shrink:0;
+  }
+  .exp-del:hover { color:var(--red); }
+
+  /* add row */
+  .add-row { padding:10px 20px 14px; }
+  .add-btn {
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:12px; color:var(--text-muted); background:none; border:none;
+    cursor:pointer; font-family:'DM Sans',sans-serif; padding:0; transition:color 0.15s;
+  }
+  .add-btn:hover { color:var(--green-dark); }
+
+  /* col headers */
+  .col-headers {
+    display:grid; grid-template-columns:1fr 120px 90px 28px;
+    gap:8px; padding:6px 20px 4px;
+    border-bottom:1px solid #F0EDE8;
+  }
+  .col-h { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:#BBB; font-weight:600; }
+  .col-h.right { text-align:right; }
+  .col-h.center { text-align:center; }
+
+  .footer { text-align:center; color:#C0B5A5; font-size:13px; margin-top:36px; font-family:'Playfair Display',serif; font-style:italic; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="wedding-todo.html" class="nav-btn">☑ To-Do List</a>
+  <a href="wedding-budget.html" class="nav-btn active">💰 Budget</a>
+  <a href="wedding-activities.html" class="nav-btn">🎉 Activities</a>
+</nav>
+
+<div class="header">
+  <p class="header-eyebrow">18 · 19 · 20 December 2026</p>
+  <h1>Wedding Budget</h1>
+  <p class="header-sub">Total budget: $50,000 NZD</p>
+  <div class="budget-summary">
+    <div class="summary-pill sp-paid">
+      <div class="sp-label">Paid</div>
+      <div class="sp-val" id="sum-paid">$0</div>
+    </div>
+    <div class="summary-pill sp-topay">
+      <div class="sp-label">To Pay</div>
+      <div class="sp-val" id="sum-topay">$0</div>
+    </div>
+    <div class="summary-pill">
+      <div class="sp-label">Estimated</div>
+      <div class="sp-val" id="sum-estimate">$0</div>
+    </div>
+    <div class="summary-pill sp-remaining">
+      <div class="sp-label">Remaining Budget</div>
+      <div class="sp-val" id="sum-remaining">$50,000</div>
+    </div>
+  </div>
+  <div class="bbar-wrap">
+    <div class="bbar-labels">
+      <span>Spent &amp; committed</span>
+      <span id="bbar-pct">0% of budget</span>
+    </div>
+    <div class="bbar-track">
+      <div class="bbar-paid"  id="bbar-paid"  style="width:0%"></div>
+      <div class="bbar-topay" id="bbar-topay" style="width:0%"></div>
+      <div class="bbar-over"  id="bbar-over"  style="width:0%"></div>
+    </div>
+  </div>
+</div>
+
+<div class="main" id="main"></div>
+
+<script>
+const BUDGET = 50000;
+const SK = 'wedding-budget-v1';
+
+// ── DEFAULT DATA ───────────────────────────────────────────────────────────────
+// status: 'estimate' | 'topay' | 'paid'
+const DEFAULT_CATS = [
+  { id:'venue', emoji:'🏡', label:'Venue & Logistics', items:[
+    { id:'b-v1', name:'Venue hire — Hillbrook Farm & Estate (full weekend)', amount:8000, status:'estimate' },
+    { id:'b-v2', name:'Accommodation for guests (onsite, included in venue)', amount:0, status:'paid' },
+    { id:'b-v3', name:'Parking field setup / signage', amount:150, status:'estimate' },
+  ]},
+  { id:'decor', emoji:'🌿', label:'Furniture & Décor', items:[
+    { id:'b-d1', name:'Furniture hire (tables, chairs, etc.)', amount:1200, status:'estimate' },
+    { id:'b-d2', name:'Lighting (fairy lights, lanterns, candles)', amount:400, status:'estimate' },
+    { id:'b-d3', name:'Florals / foliage', amount:800, status:'estimate' },
+    { id:'b-d4', name:'Table styling (cloths, centrepieces)', amount:300, status:'estimate' },
+    { id:'b-d5', name:'Signage (welcome sign, labels)', amount:150, status:'estimate' },
+    { id:'b-d6', name:'Delivery & setup fees', amount:200, status:'estimate' },
+  ]},
+  { id:'ceremony', emoji:'💍', label:'Ceremony', items:[
+    { id:'b-c1', name:'Celebrant fee', amount:900, status:'estimate' },
+    { id:'b-c2', name:'Wedding rings', amount:1500, status:'estimate' },
+    { id:'b-c3', name:'Marriage licence fee (BDM NZ)', amount:150, status:'estimate' },
+    { id:'b-c4', name:'Ceremony music (PA / musician)', amount:500, status:'estimate' },
+  ]},
+  { id:'guests', emoji:'💌', label:'Guests & Invitations', items:[
+    { id:'b-g1', name:'Save-the-dates (design & print / digital)', amount:100, status:'estimate' },
+    { id:'b-g2', name:'Formal invitations (design & print)', amount:200, status:'estimate' },
+    { id:'b-g3', name:'Postage', amount:80, status:'estimate' },
+  ]},
+  { id:'food', emoji:'🍽️', label:'Food & Drink', items:[
+    { id:'b-f1', name:'Friday canapés', amount:1500, status:'estimate' },
+    { id:'b-f2', name:'Friday buffet dinner', amount:5500, status:'estimate' },
+    { id:'b-f3', name:'Saturday brunch', amount:1200, status:'estimate' },
+    { id:'b-f4', name:'Saturday BBQ', amount:1000, status:'estimate' },
+    { id:'b-f5', name:'Sunday continental breakfast', amount:600, status:'estimate' },
+    { id:'b-f6', name:'Drinks (alcohol & non-alcoholic)', amount:2500, status:'estimate' },
+    { id:'b-f7', name:'Coffee setup', amount:400, status:'estimate' },
+    { id:'b-f8', name:'Wedding cake / dessert', amount:600, status:'estimate' },
+  ]},
+  { id:'activities', emoji:'🃏', label:'Activities & Entertainment', items:[
+    { id:'b-a1', name:'DJ / playlist setup / Spotify speaker hire', amount:300, status:'estimate' },
+    { id:'b-a2', name:'Board games (if purchasing new ones)', amount:150, status:'estimate' },
+    { id:'b-a3', name:'Lawn games (bocce, pétanque, etc.)', amount:120, status:'estimate' },
+  ]},
+  { id:'attire', emoji:'👗', label:'Attire', items:[
+    { id:'b-at1', name:'Shi Wei — wedding outfit', amount:1500, status:'estimate' },
+    { id:'b-at2', name:'Evan — wedding outfit', amount:800, status:'estimate' },
+    { id:'b-at3', name:'Olivia — ceremony outfit', amount:150, status:'estimate' },
+    { id:'b-at4', name:'Alterations & dry cleaning', amount:200, status:'estimate' },
+  ]},
+  { id:'photography', emoji:'📷', label:'Photography & Memories', items:[
+    { id:'b-p1', name:'Photographer (ceremony & reception)', amount:3500, status:'estimate' },
+    { id:'b-p2', name:'Videographer (optional)', amount:0, status:'estimate' },
+    { id:'b-p3', name:'Photo album / prints', amount:400, status:'estimate' },
+  ]},
+  { id:'baby', emoji:'👶', label:"Olivia's Logistics", items:[
+    { id:'b-b1', name:'Baby equipment for the weekend (cot hire etc.)', amount:150, status:'estimate' },
+    { id:'b-b2', name:'Childcare / babysitter during ceremony', amount:300, status:'estimate' },
+  ]},
+  { id:'budget', emoji:'💰', label:'Admin & Other', items:[
+    { id:'b-bu1', name:'Wedding insurance', amount:350, status:'estimate' },
+    { id:'b-bu2', name:'Contingency (unexpected costs)', amount:1500, status:'estimate' },
+    { id:'b-bu3', name:'Miscellaneous / tips', amount:300, status:'estimate' },
+  ]},
+];
+
+// ── STATE ──────────────────────────────────────────────────────────────────────
+// ── SUPABASE SYNC ─────────────────────────────────────────────────────────────
+const SB_URL = 'https://xoqamngvqhgancbjmkvu.supabase.co';
+const SB_KEY = 'sb_publishable_rhkoY7C-OqoHJSYQSfsdVg_WQbiPfZg';
+
+async function sbFetch(path, opts) {
+  opts = opts || {};
+  const res = await fetch(SB_URL + path, {
+    method: opts.method || 'GET',
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': 'Bearer ' + SB_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || ''
+    },
+    body: opts.body || undefined
+  });
+  if (!res.ok) { const t = await res.text(); console.error('Supabase error:', res.status, t); return null; }
+  const txt = await res.text();
+  return txt ? JSON.parse(txt) : null;
+}
+
+async function loadFromSupabase(pageKey, stateRef, onLoaded) {
+  showSyncStatus('loading');
+  try {
+    const rows = await sbFetch('/rest/v1/wedding_state?page_key=eq.' + pageKey + '&select=state,updated_at');
+    if (rows && rows.length > 0 && rows[0].state) {
+      Object.assign(stateRef, rows[0].state);
+      lastUpdatedAt = rows[0].updated_at;
+    }
+  } catch(e) { console.warn('Supabase load failed, using defaults:', e); }
+  onLoaded();
+  hideSyncStatus();
+  startPolling(pageKey, stateRef, onLoaded);
+}
+
+async function saveToSupabase(pageKey, stateRef) {
+  showSyncStatus('saving');
+  try {
+    const body = JSON.stringify({ page_key: pageKey, state: stateRef, updated_at: new Date().toISOString() });
+    await sbFetch('/rest/v1/wedding_state', {
+      method: 'POST',
+      prefer: 'resolution=merge-duplicates',
+      body: body
+    });
+  } catch(e) { console.warn('Supabase save failed:', e); }
+  hideSyncStatus();
+}
+
+let lastUpdatedAt = null;
+function startPolling(pageKey, stateRef, onLoaded) {
+  setInterval(async function() {
+    try {
+      const rows = await sbFetch('/rest/v1/wedding_state?page_key=eq.' + pageKey + '&select=state,updated_at');
+      if (rows && rows.length > 0) {
+        if (lastUpdatedAt !== null && rows[0].updated_at !== lastUpdatedAt) {
+          Object.assign(stateRef, rows[0].state);
+          onLoaded();
+        }
+        lastUpdatedAt = rows[0].updated_at;
+      }
+    } catch(e) {}
+  }, 8000);
+}
+
+function showSyncStatus(mode) {
+  var el = document.getElementById('syncStatus');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'syncStatus';
+    el.style.cssText = 'position:fixed;bottom:16px;right:16px;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:600;font-family:"DM Sans",sans-serif;z-index:9999;transition:opacity 0.4s;pointer-events:none;box-shadow:0 2px 8px rgba(0,0,0,0.1);';
+    document.body.appendChild(el);
+  }
+  el.style.opacity = '1';
+  if (mode === 'loading') {
+    el.style.background = '#EBF4FA'; el.style.color = '#4A7FA5'; el.textContent = '↓ Loading…';
+  } else {
+    el.style.background = '#EAF5EC'; el.style.color = '#3A7D55'; el.textContent = '✓ Saved';
+  }
+}
+function hideSyncStatus() {
+  setTimeout(function() {
+    var el = document.getElementById('syncStatus');
+    if (el) el.style.opacity = '0';
+  }, 1400);
+}
+
+let BS = { items:{}, collapsed:{} };
+
+function persist() { saveToSupabase(SK, BS); }
+
+function seedDefaults() {
+  DEFAULT_CATS.forEach(cat => cat.items.forEach(it => {
+    if (!BS.items[it.id]) BS.items[it.id] = { name:it.name, amount:it.amount, status:it.status };
+  }));
+}
+
+// Build live category list (default items + any user-added items)
+function getLiveItems(catId) {
+  const defaults = (DEFAULT_CATS.find(c=>c.id===catId)||{items:[]}).items.map(i=>i.id);
+  const userAdded = Object.keys(BS.items).filter(k => k.startsWith('custom-'+catId+'-'));
+  return [...defaults, ...userAdded].filter(id => BS.items[id]);
+}
+
+function onStateLoaded() {
+  seedDefaults();
+  render();
+  updateSummary();
+}
+
+// ── HELPERS ────────────────────────────────────────────────────────────────────
+const STATUS_META = {
+  estimate: { label:'Estimate', cls:'sp-estimate' },
+  topay:    { label:'To Pay',   cls:'sp-topay' },
+  paid:     { label:'Paid',     cls:'sp-paid' },
+};
+
+function fmt(n) {
+  if (!n && n!==0) return '$0';
+  return '$' + Math.round(n).toLocaleString('en-NZ');
+}
+
+function catTotals(catId) {
+  const ids = getLiveItems(catId);
+  let paid=0, topay=0, estimate=0;
+  ids.forEach(id => {
+    const it = BS.items[id]; if (!it) return;
+    const amt = parseFloat(it.amount)||0;
+    if (it.status==='paid')     paid     += amt;
+    else if (it.status==='topay') topay  += amt;
+    else                         estimate += amt;
+  });
+  return { paid, topay, estimate, total: paid+topay+estimate };
+}
+
+function globalTotals() {
+  let paid=0, topay=0, estimate=0;
+  DEFAULT_CATS.forEach(cat => {
+    const t = catTotals(cat.id);
+    paid += t.paid; topay += t.topay; estimate += t.estimate;
+  });
+  return { paid, topay, estimate, total: paid+topay+estimate };
+}
+
+let openStatusDD = null;
+
+// ── SUMMARY ────────────────────────────────────────────────────────────────────
+function updateSummary() {
+  const g = globalTotals();
+  document.getElementById('sum-paid').textContent      = fmt(g.paid);
+  document.getElementById('sum-topay').textContent     = fmt(g.topay);
+  document.getElementById('sum-estimate').textContent  = fmt(g.estimate);
+  const remaining = BUDGET - g.paid - g.topay - g.estimate;
+  document.getElementById('sum-remaining').textContent = fmt(remaining);
+
+  const paidPct    = Math.min(g.paid    / BUDGET * 100, 100);
+  const topayPct   = Math.min(g.topay   / BUDGET * 100, 100 - paidPct);
+  const committed  = g.paid + g.topay + g.estimate;
+  const overPct    = committed > BUDGET ? Math.min((committed - BUDGET) / BUDGET * 100, 10) : 0;
+  document.getElementById('bbar-paid').style.width  = paidPct+'%';
+  document.getElementById('bbar-topay').style.width = topayPct+'%';
+  document.getElementById('bbar-over').style.width  = overPct+'%';
+  const totalPct = Math.round(committed / BUDGET * 100);
+  document.getElementById('bbar-pct').textContent = totalPct+'% of budget';
+}
+
+// ── RENDER ─────────────────────────────────────────────────────────────────────
+function render() {
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+
+  DEFAULT_CATS.forEach(cat => {
+    const collapsed = BS.collapsed[cat.id];
+    const totals = catTotals(cat.id);
+    const liveIds = getLiveItems(cat.id);
+
+    const card = document.createElement('div');
+    card.className = 'bcat';
+
+    // Header
+    const hdr = document.createElement('div');
+    hdr.className = 'bcat-header';
+    hdr.innerHTML = `
+      <div class="bcat-left">
+        <span class="bcat-emoji">${cat.emoji}</span>
+        <span class="bcat-title">${cat.label}</span>
+      </div>
+      <div class="bcat-right">
+        <span class="bcat-total">${fmt(totals.total)}</span>
+        <span class="bcat-chevron${collapsed?' closed':''}">▾</span>
+      </div>`;
+    hdr.addEventListener('click', () => {
+      BS.collapsed[cat.id] = !BS.collapsed[cat.id];
+      persist(); render(); updateSummary();
+    });
+    card.appendChild(hdr);
+
+    if (!collapsed) {
+      const body = document.createElement('div');
+      body.className = 'bcat-body';
+
+      // Section summary
+      const sumBar = document.createElement('div');
+      sumBar.className = 'bcat-summary';
+      [
+        { label:'Paid', val:totals.paid, color:'var(--paid)' },
+        { label:'To Pay', val:totals.topay, color:'var(--topay)' },
+        { label:'Estimated', val:totals.estimate, color:'var(--estimate)' },
+      ].forEach(s => {
+        const el = document.createElement('div');
+        el.className = 'bcat-sum-item';
+        el.innerHTML = `<span class="bcat-sum-dot" style="background:${s.color}"></span><span class="bcat-sum-label">${s.label}:</span><span class="bcat-sum-val">${fmt(s.val)}</span>`;
+        sumBar.appendChild(el);
+      });
+      body.appendChild(sumBar);
+
+      // Column headers
+      const colHdr = document.createElement('div');
+      colHdr.className = 'col-headers';
+      colHdr.innerHTML = `<div class="col-h">Item</div><div class="col-h right">Amount (NZD)</div><div class="col-h center">Status</div><div class="col-h"></div>`;
+      body.appendChild(colHdr);
+
+      // Expense rows
+      liveIds.forEach(id => {
+        const it = BS.items[id]; if (!it) return;
+        const sm = STATUS_META[it.status] || STATUS_META.estimate;
+
+        const row = document.createElement('div');
+        row.className = 'expense-row';
+
+        // Name input
+        const nameIn = document.createElement('input');
+        nameIn.type = 'text';
+        nameIn.className = 'exp-name';
+        nameIn.value = it.name;
+        nameIn.placeholder = 'Item name…';
+        nameIn.addEventListener('input', e => {
+          BS.items[id].name = e.target.value;
+          persist();
+        });
+
+        // Amount
+        const amtWrap = document.createElement('div');
+        amtWrap.className = 'exp-amount-wrap';
+        const cur = document.createElement('span');
+        cur.className = 'exp-currency';
+        cur.textContent = '$';
+        const amtIn = document.createElement('input');
+        amtIn.type = 'number';
+        amtIn.className = 'exp-amount';
+        amtIn.value = it.amount || '';
+        amtIn.placeholder = '0';
+        amtIn.min = '0';
+        amtIn.step = '50';
+        amtIn.addEventListener('input', e => {
+          BS.items[id].amount = parseFloat(e.target.value)||0;
+          persist(); updateSummary(); refreshCatSummary(cat.id, body, liveIds);
+        });
+        amtWrap.appendChild(cur);
+        amtWrap.appendChild(amtIn);
+
+        // Status
+        const swrap = document.createElement('div');
+        swrap.className = 'status-wrap';
+        const spill = document.createElement('button');
+        spill.className = 'status-pill ' + sm.cls;
+        spill.textContent = sm.label;
+        const sdd = document.createElement('div');
+        sdd.className = 'status-dd';
+        ['estimate','topay','paid'].forEach(opt => {
+          const m = STATUS_META[opt];
+          const o = document.createElement('div');
+          o.className = 'status-opt';
+          o.textContent = m.label;
+          o.addEventListener('mousedown', e => {
+            e.preventDefault(); e.stopPropagation();
+            BS.items[id].status = opt;
+            persist(); closeStatusDD(); render(); updateSummary();
+          });
+          sdd.appendChild(o);
+        });
+        spill.addEventListener('click', e => {
+          e.stopPropagation();
+          if (openStatusDD && openStatusDD !== sdd) closeStatusDD();
+          sdd.classList.contains('open') ? closeStatusDD() : (sdd.classList.add('open'), openStatusDD = sdd);
+        });
+        swrap.appendChild(spill);
+        swrap.appendChild(sdd);
+
+        // Delete
+        const del = document.createElement('button');
+        del.className = 'exp-del';
+        del.title = 'Remove item';
+        del.textContent = '×';
+        del.addEventListener('click', e => {
+          e.stopPropagation();
+          delete BS.items[id];
+          persist(); render(); updateSummary();
+        });
+
+        row.appendChild(nameIn);
+        row.appendChild(amtWrap);
+        row.appendChild(swrap);
+        row.appendChild(del);
+        body.appendChild(row);
+      });
+
+      // Add row
+      const addRow = document.createElement('div');
+      addRow.className = 'add-row';
+      const addBtn = document.createElement('button');
+      addBtn.className = 'add-btn';
+      addBtn.innerHTML = `<span style="font-size:16px;line-height:1">＋</span> Add item`;
+      addBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const newId = 'custom-' + cat.id + '-' + Date.now();
+        BS.items[newId] = { name:'', amount:0, status:'estimate' };
+        persist(); render(); updateSummary();
+        // focus the new row's name input after render
+        setTimeout(() => {
+          const inputs = document.querySelectorAll('.exp-name');
+          if (inputs.length) inputs[inputs.length-2].focus();
+        }, 50);
+      });
+      addRow.appendChild(addBtn);
+      body.appendChild(addRow);
+
+      card.appendChild(body);
+    }
+
+    main.appendChild(card);
+  });
+
+  const footer = document.createElement('p');
+  footer.className = 'footer';
+  footer.textContent = 'Made with love 🌿 · Hillbrook Farm, December 2026';
+  main.appendChild(footer);
+}
+
+function refreshCatSummary(catId, body, liveIds) {
+  // lightweight re-compute of section summary without full re-render
+  const t = catTotals(catId);
+  const bars = body.querySelectorAll('.bcat-sum-val');
+  if (bars.length >= 3) {
+    bars[0].textContent = fmt(t.paid);
+    bars[1].textContent = fmt(t.topay);
+    bars[2].textContent = fmt(t.estimate);
+  }
+  // update section header total
+  const hdrTotal = body.closest('.bcat').querySelector('.bcat-total');
+  if (hdrTotal) hdrTotal.textContent = fmt(t.total);
+}
+
+function closeStatusDD() {
+  if (openStatusDD) { openStatusDD.classList.remove('open'); openStatusDD = null; }
+}
+document.addEventListener('click', closeStatusDD);
+
+// Boot: load from Supabase, then render
+loadFromSupabase(SK, BS, onStateLoaded);
+</script>
+</body>
+</html>
