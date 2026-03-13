@@ -31,10 +31,10 @@
   .nav {
     background:rgba(44,62,45,0.97); backdrop-filter:blur(8px);
     display:flex; justify-content:center; gap:4px; padding:10px 16px;
-    position:sticky; top:0; z-index:300;
+    position:sticky; top:0; z-index:300; flex-wrap:wrap;
   }
   .nav-btn {
-    padding:7px 20px; border-radius:20px; border:none; font-size:13px;
+    padding:7px 18px; border-radius:20px; border:none; font-size:13px;
     font-family:'DM Sans',sans-serif; font-weight:500; cursor:pointer;
     color:rgba(255,255,255,0.6); background:transparent; transition:all 0.15s;
     text-decoration:none; display:inline-flex; align-items:center; gap:6px;
@@ -188,15 +188,77 @@
   .col-h.center { text-align:center; }
 
   .footer { text-align:center; color:#C0B5A5; font-size:13px; margin-top:36px; font-family:'Playfair Display',serif; font-style:italic; }
+
+  /* ── PASSWORD GATE ── */
+  #pwGate {
+    position:fixed; inset:0; z-index:200;
+    background:linear-gradient(135deg,#2C3E2D 0%,#3A5230 50%,#4A5E3A 100%);
+    display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  #pwGate::before {
+    content:''; position:absolute; inset:0;
+    background-image:radial-gradient(circle,rgba(255,255,255,0.06) 1px,transparent 1px);
+    background-size:24px 24px; pointer-events:none;
+  }
+  .pw-card {
+    background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12);
+    border-radius:20px; padding:40px 36px; width:100%; max-width:380px;
+    text-align:center; position:relative; backdrop-filter:blur(8px);
+    box-shadow:0 24px 60px rgba(0,0,0,0.35);
+  }
+  .pw-icon { font-size:36px; margin-bottom:16px; }
+  .pw-title {
+    font-family:'Playfair Display',serif; font-style:italic; font-size:26px;
+    color:#FAF7F2; font-weight:400; margin-bottom:6px;
+  }
+  .pw-sub { color:rgba(255,255,255,0.45); font-size:13px; margin-bottom:28px; }
+  .pw-input {
+    width:100%; padding:13px 18px; border-radius:12px;
+    border:1.5px solid rgba(255,255,255,0.18); background:rgba(255,255,255,0.08);
+    color:#fff; font-size:15px; font-family:'DM Sans',sans-serif;
+    outline:none; text-align:center; letter-spacing:2px;
+    transition:border-color 0.2s; margin-bottom:14px;
+  }
+  .pw-input::placeholder { letter-spacing:0; color:rgba(255,255,255,0.3); }
+  .pw-input:focus { border-color:rgba(168,197,160,0.7); }
+  .pw-input.shake { animation:pwShake 0.4s ease; border-color:rgba(220,80,80,0.7) !important; }
+  @keyframes pwShake {
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-8px);}
+    40%{transform:translateX(8px);}
+    60%{transform:translateX(-5px);}
+    80%{transform:translateX(5px);}
+  }
+  .pw-btn {
+    width:100%; padding:13px; border-radius:12px; border:none;
+    background:var(--green-light); color:var(--green-dark);
+    font-size:14px; font-family:'DM Sans',sans-serif; font-weight:700;
+    cursor:pointer; transition:background 0.15s;
+  }
+  .pw-btn:hover { background:#BDD6B5; }
+  .pw-error { color:rgba(255,160,140,0.9); font-size:12px; margin-top:10px; min-height:18px; }
 </style>
 </head>
 <body>
 
 <nav class="nav">
-  <a href="wedding-todo.html" class="nav-btn">☑ To-Do List</a>
-  <a href="wedding-budget.html" class="nav-btn active">💰 Budget</a>
+  <a href="wedding-todo.html"       class="nav-btn">☑ To-Do List</a>
+  <a href="wedding-budget.html"     class="nav-btn active">💰 Budget</a>
   <a href="wedding-activities.html" class="nav-btn">🎉 Activities</a>
+  <a href="wedding-moodboard.html"  class="nav-btn">🎨 Mood Board</a>
 </nav>
+
+<!-- PASSWORD GATE (sits below nav) -->
+<div id="pwGate">
+  <div class="pw-card">
+    <div class="pw-icon">💍</div>
+    <div class="pw-title">Wedding Budget</div>
+    <div class="pw-sub">Enter the password to continue</div>
+    <input class="pw-input" id="pwInput" type="password" placeholder="Password" autocomplete="off" />
+    <button class="pw-btn" id="pwSubmit">Unlock</button>
+    <div class="pw-error" id="pwError"></div>
+  </div>
+</div>
 
 <div class="header">
   <p class="header-eyebrow">18 · 19 · 20 December 2026</p>
@@ -660,6 +722,43 @@ function closeStatusDD() {
   if (openStatusDD) { openStatusDD.classList.remove('open'); openStatusDD = null; }
 }
 document.addEventListener('click', closeStatusDD);
+
+// ── PASSWORD GATE ─────────────────────────────────────────────────────────────
+const PW = 'Kimmers';
+const GATE = document.getElementById('pwGate');
+const PW_KEY = 'wb_unlocked';
+
+function unlock() {
+  GATE.style.opacity = '0';
+  GATE.style.transition = 'opacity 0.4s ease';
+  setTimeout(() => { GATE.style.display = 'none'; }, 400);
+}
+
+// Already unlocked this session?
+if (sessionStorage.getItem(PW_KEY) === '1') {
+  unlock();
+} else {
+  document.getElementById('pwInput').focus();
+}
+
+function tryPassword() {
+  const val = document.getElementById('pwInput').value;
+  if (val === PW) {
+    sessionStorage.setItem(PW_KEY, '1');
+    unlock();
+  } else {
+    const inp = document.getElementById('pwInput');
+    document.getElementById('pwError').textContent = 'Incorrect password — try again.';
+    inp.classList.remove('shake');
+    void inp.offsetWidth; // force reflow to restart animation
+    inp.classList.add('shake');
+    inp.value = '';
+    setTimeout(() => inp.classList.remove('shake'), 450);
+  }
+}
+
+document.getElementById('pwSubmit').addEventListener('click', tryPassword);
+document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') tryPassword(); });
 
 // Boot: load from Supabase, then render
 loadFromSupabase(SK, BS, onStateLoaded);
